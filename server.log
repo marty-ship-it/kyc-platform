@@ -410,3 +410,11 @@
 
  ✓ Starting...
  ✓ Ready in 1425ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1359ms (1486 modules)
+ GET /login 200 in 1606ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 926ms (1727 modules)
+ GET /login 200 in 47ms
+ GET /api/auth/session 200 in 1382ms
+ ✓ Compiled in 334ms (1487 modules)

@@ -1,11 +1,32 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { prisma } from '@/lib/prisma'
-import bcrypt from 'bcrypt'
+
+// Demo users for the deployed version
+const users = [
+  {
+    id: '1',
+    email: 'sarah@coastalrealty.com',
+    password: 'Password123!',
+    name: 'Sarah Mitchell',
+    role: 'DIRECTOR'
+  },
+  {
+    id: '2', 
+    email: 'luca@coastalrealty.com',
+    password: 'Password123!',
+    name: 'Luca Romano',
+    role: 'AGENT'
+  },
+  {
+    id: '3',
+    email: 'priya@coastalrealty.com', 
+    password: 'Password123!',
+    name: 'Priya Sharma',
+    role: 'COMPLIANCE_OFFICER'
+  }
+]
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -18,31 +39,22 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
-          }
-        })
-
-        if (!user) {
-          return null
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.passwordHash
+        // Check against demo users
+        const user = users.find(user => 
+          user.email === credentials.email && 
+          user.password === credentials.password
         )
 
-        if (!isPasswordValid) {
-          return null
+        if (user) {
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          }
         }
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        }
+        return null
       }
     })
   ],
@@ -52,7 +64,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
-        token.role = (user as any).role
+        token.role = user.role
       }
       return token
     },
@@ -67,6 +79,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
+  secret: process.env.NEXTAUTH_SECRET || 'demo-secret-key-for-kycira-platform'
 }
 
 export default NextAuth(authOptions)
