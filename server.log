@@ -400,3 +400,13 @@
  GET /api/auth/session 200 in 14ms
  GET /api/auth/session 200 in 66ms
  GET /api/auth/session 200 in 19ms
+ ✓ Compiled in 745ms (1941 modules)
+ GET / 200 in 130ms
+ ⚠ Found a change in next.config.js. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.2
+   - Local:        http://localhost:4287
+   - Network:      http://192.168.1.111:4287
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1425ms

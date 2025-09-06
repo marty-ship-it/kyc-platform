@@ -50,7 +50,7 @@ export default function DealDetailsPage() {
   const [riskRationale, setRiskRationale] = useState<string>('')
   const [sourceOfFunds, setSourceOfFunds] = useState<string>('')
   const [reportsStatus, setReportsStatus] = useState<string>('pending')
-  const [transactions, setTransactions] = useState<any[]>([])
+  const [transactions, setTransactions] = useState<unknown[]>([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
