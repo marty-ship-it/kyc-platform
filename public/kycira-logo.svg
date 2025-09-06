@@ -1,0 +1,29 @@
+<svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#59F3C3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C83FF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- K -->
+  <path d="M2 4v24h3V18l8 10h4l-8-10 8-8h-4l-8 8V4H2z" fill="url(#logoGradient)"/>
+  
+  <!-- Y -->
+  <path d="M18 4l6 8 6-8h3l-7.5 10V28h-3V14L15 4h3z" fill="#E5E7EB"/>
+  
+  <!-- C -->
+  <path d="M44 12c-4.4 0-8 3.6-8 8s3.6 8 8 8c2.2 0 4.2-0.9 5.7-2.3l2.1 2.1C49.6 29.9 46.9 31 44 31c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.9 0 5.6 1.1 7.8 3.2l-2.1 2.1C48.2 12.9 46.2 12 44 12z" fill="#E5E7EB"/>
+  
+  <!-- I -->
+  <path d="M60 4v24h3V4h-3z" fill="#E5E7EB"/>
+  
+  <!-- R - Fixed to be clearly an R not P -->
+  <path d="M68 4v24h3v-9l7 9h4l-8-10c2.5-0.8 4-3.2 4-6 0-4.4-3.6-8-8-8H68zm3 3h6c2.8 0 5 2.2 5 5s-2.2 5-5 5h-6V7z" fill="#E5E7EB"/>
+  
+  <!-- A -->
+  <path d="M90 28L98 4h3l8 24h-3l-2-6h-8l-2 6h-3zm5-9h6l-3-9-3 9z" fill="#E5E7EB"/>
+  
+  <!-- Brand dot -->
+  <circle cx="113" cy="20" r="2" fill="url(#logoGradient)"/>
+</svg>

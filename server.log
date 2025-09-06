@@ -1,0 +1,402 @@
+
+> kyc-platform@0.1.0 dev
+> next dev -p 4287
+
+   ▲ Next.js 15.5.2
+   - Local:        http://localhost:4287
+   - Network:      http://192.168.1.111:4287
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1298ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.5s (1581 modules)
+ HEAD / 200 in 2744ms
+ GET / 200 in 60ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 1341ms (2148 modules)
+ GET / 200 in 865ms
+ GET / 200 in 11ms
+ GET / 200 in 10ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 1722ms
+ GET /api/auth/session 200 in 1845ms
+ ✓ Compiled /deals in 306ms (2169 modules)
+ GET /deals 200 in 390ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 249ms
+ GET / 200 in 38ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 227ms
+ GET /api/auth/session 200 in 64ms
+ GET /deals 200 in 31ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 218ms
+ ✓ Compiled /deals/[id] in 427ms (2235 modules)
+ GET /deals/1 200 in 722ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 242ms
+ GET /api/auth/session 200 in 37ms
+ ✓ Compiled in 350ms (2249 modules)
+ GET /deals/1 200 in 33ms
+ GET /api/auth/session 200 in 30ms
+ ✓ Compiled in 237ms (2156 modules)
+ GET /deals/1 200 in 104ms
+ GET /api/auth/session 200 in 81ms
+ GET / 200 in 58ms
+ ✓ Compiled /_error in 491ms (2235 modules)
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 788ms
+ GET /deals 200 in 88ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 218ms
+ ○ Compiling /training ...
+ ✓ Compiled /training in 565ms (2248 modules)
+ GET /training 200 in 616ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 252ms
+ ✓ Compiled /policies in 410ms (2261 modules)
+ GET /policies 200 in 467ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 235ms
+ GET /deals 200 in 34ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 217ms
+ GET /api/auth/session 200 in 50ms
+ GET / 200 in 40ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 216ms
+ GET /deals 200 in 31ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 219ms
+ GET /training 200 in 48ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 219ms
+ GET /policies 200 in 31ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 221ms
+ ✓ Compiled /_not-found in 289ms (2266 modules)
+ GET /admin 404 in 328ms
+ GET /admin 404 in 70ms
+ GET /api/auth/session 200 in 33ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 222ms
+ GET /policies 200 in 137ms
+ GET /api/auth/session 200 in 10ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 208ms
+ ✓ Compiled in 387ms (2280 modules)
+ GET /policies 200 in 28ms
+ ✓ Compiled in 194ms (1934 modules)
+ GET /policies 200 in 84ms
+ ✓ Compiled in 263ms (1934 modules)
+ GET /policies 200 in 44ms
+ ✓ Compiled in 355ms (1934 modules)
+ GET / 200 in 161ms
+ ✓ Compiled /_error in 370ms (2253 modules)
+ GET /api/auth/session 200 in 489ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 679ms
+ ✓ Compiled /login in 365ms (2260 modules)
+ GET /login 200 in 423ms
+ GET /api/auth/session 200 in 65ms
+ GET / 200 in 50ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 246ms
+ GET /api/auth/session 200 in 12ms
+ GET /deals 200 in 51ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 217ms
+ ✓ Compiled /training in 342ms (1356 modules)
+ GET /training 200 in 388ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 233ms
+ GET /policies 200 in 39ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 215ms
+ GET /api/auth/session 200 in 36ms
+ GET /api/auth/session 200 in 12ms
+ GET /api/auth/session 200 in 8ms
+ ✓ Compiled in 246ms (925 modules)
+ GET /login 200 in 20ms
+ ✓ Compiled in 94ms (925 modules)
+ GET /login 200 in 11ms
+ ✓ Compiled in 400ms (1941 modules)
+ GET /login 200 in 98ms
+ ✓ Compiled in 194ms (1941 modules)
+ GET /login 200 in 44ms
+ ✓ Compiled in 189ms (1941 modules)
+ GET /login 200 in 40ms
+ ✓ Compiled in 206ms (1941 modules)
+ GET /login 200 in 30ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 584ms (1256 modules)
+ GET /api/auth/session 200 in 718ms
+ GET /policies 200 in 217ms
+ GET /api/auth/session 200 in 32ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 514ms (2260 modules)
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 821ms
+ GET /api/auth/session 200 in 64ms
+ ✓ Compiled in 221ms (925 modules)
+ GET /policies 200 in 72ms
+ ✓ Compiled in 107ms (925 modules)
+ GET /policies 200 in 11ms
+ ✓ Compiled in 298ms (1941 modules)
+ GET /policies 200 in 99ms
+ ✓ Compiled in 189ms (1941 modules)
+ GET /policies 200 in 47ms
+ ✓ Compiled in 178ms (1941 modules)
+ GET /policies 200 in 29ms
+ ✓ Compiled in 265ms (1941 modules)
+ GET /policies 200 in 29ms
+ GET /login 200 in 82ms
+ GET /login 200 in 26ms
+ GET /login 200 in 21ms
+ GET /login 200 in 12ms
+ GET /login 200 in 17ms
+ GET /login 200 in 12ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 687ms (1256 modules)
+ GET /api/auth/session 200 in 797ms
+ GET /policies 200 in 206ms
+ GET /api/auth/session 200 in 81ms
+ ✓ Compiled /_error in 324ms (2260 modules)
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 635ms
+ GET /api/auth/session 200 in 62ms
+ ✓ Compiled in 239ms (2274 modules)
+ GET /policies 200 in 65ms
+ GET /login 200 in 66ms
+ ✓ Compiled in 242ms (2274 modules)
+ GET /policies 200 in 58ms
+ ✓ Compiled in 93ms (926 modules)
+ GET /policies 200 in 10ms
+ GET /api/auth/session 200 in 154ms
+ GET /login 200 in 194ms
+ GET /login 200 in 26ms
+ GET /policies 200 in 220ms
+ GET /api/auth/session 200 in 16ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 231ms
+ ✓ Compiled in 429ms (926 modules)
+ GET /policies 200 in 13ms
+ ✓ Compiled in 448ms (2274 modules)
+ GET /policies 200 in 51ms
+ ✓ Compiled in 509ms (1941 modules)
+ GET /policies 200 in 122ms
+ ✓ Compiled in 111ms (925 modules)
+ GET /policies 200 in 13ms
+ ✓ Compiled in 228ms (1941 modules)
+ GET /policies 200 in 44ms
+ ✓ Compiled in 236ms (1941 modules)
+ GET /policies 200 in 52ms
+ ✓ Compiled /api/auth/[...nextauth] in 229ms (1256 modules)
+ GET /login 200 in 445ms
+ GET /api/auth/session 200 in 475ms
+ GET /login 200 in 9ms
+ GET /login 200 in 10ms
+ GET /login 200 in 12ms
+ GET /login 200 in 10ms
+ GET /login 200 in 10ms
+ GET /policies 200 in 172ms
+ GET /api/auth/session 200 in 87ms
+ ✓ Compiled /_error in 372ms (2260 modules)
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 679ms
+ ✓ Compiled in 281ms (2274 modules)
+ GET /policies 200 in 55ms
+ ✓ Compiled in 90ms (926 modules)
+ GET /policies 200 in 12ms
+ GET /api/auth/session 200 in 225ms
+ GET /login 200 in 43ms
+ GET /login 200 in 17ms
+ GET /policies 200 in 203ms
+ GET /api/auth/session 200 in 11ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 233ms
+ ✓ Compiled in 530ms (2274 modules)
+ GET /policies 200 in 31ms
+ ✓ Compiled in 229ms (2274 modules)
+ GET /policies 200 in 30ms
+ ✓ Compiled in 228ms (2274 modules)
+ GET /policies 200 in 56ms
+ GET /api/auth/session 200 in 191ms
+ GET /login 200 in 31ms
+ GET /login 200 in 13ms
+ GET /login 200 in 13ms
+ GET /policies 200 in 167ms
+ GET /api/auth/session 200 in 12ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 234ms
+ GET / 200 in 73ms
+ GET /api/auth/session 200 in 10ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 207ms
+ GET / 200 in 38ms
+ GET / 200 in 33ms
+ GET /api/auth/session 200 in 24ms
+ GET / 200 in 59ms
+ GET / 200 in 43ms
+ ⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/auth/session'
+}
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 876ms (2265 modules)
+ GET /apple-touch-icon-precomposed.png 404 in 988ms
+ GET / 200 in 99ms
+ GET / 200 in 100ms
+ GET /api/auth/session 500 in 972ms
+ POST /api/auth/_log 200 in 52ms
+ GET /apple-touch-icon.png 404 in 84ms
+ GET /login 200 in 57ms
+ GET /api/auth/session 200 in 21ms
+ GET /api/auth/session 200 in 29ms
+ ✓ Compiled in 606ms (1941 modules)
+ GET / 200 in 131ms
+ ✓ Compiled in 205ms (1941 modules)
+ GET / 200 in 44ms
+ GET /login 200 in 58ms
+ GET /login 200 in 40ms
+ ✓ Compiled /api/auth/[...nextauth] in 222ms (1256 modules)
+ GET /api/auth/session 200 in 334ms
+ GET / 200 in 193ms
+ GET /api/auth/session 200 in 57ms
+ ✓ Compiled /_error in 236ms (2260 modules)
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 552ms
+ GET / 200 in 82ms
+ GET /deals 200 in 42ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 217ms
+ GET /deals/1 200 in 48ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 211ms
+ GET /api/auth/session 200 in 43ms
+ GET /api/auth/session 200 in 28ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 44ms
+ GET /api/auth/session 200 in 18ms
+ GET / 200 in 35ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 217ms
+ ✓ Compiled in 1183ms (2274 modules)
+ GET / 200 in 74ms
+ GET /login 200 in 74ms
+ ✓ Compiled in 313ms (2274 modules)
+ GET / 200 in 62ms
+ GET /login 200 in 63ms
+ GET / 200 in 28ms
+ GET /deals 200 in 46ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 251ms
+ GET /deals/1 200 in 32ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 208ms
+ GET /api/auth/session 200 in 37ms
+ GET /deals 200 in 32ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 233ms
+ GET /deals/1 200 in 31ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 208ms
+ ✓ Compiled in 297ms (2274 modules)
+ GET /login 200 in 51ms
+ GET /deals/1 200 in 50ms
+ GET /api/auth/session 200 in 74ms
+ GET /api/auth/session 200 in 20ms
+ ✓ Compiled in 455ms (2274 modules)
+ GET /login 200 in 101ms
+ GET /deals/1 200 in 100ms
+ GET /api/auth/session 200 in 69ms
+ GET /api/auth/session 200 in 13ms
+ GET /deals/1 200 in 258ms
+ GET /api/auth/session 200 in 15ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 239ms
+ GET /deals 200 in 49ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 223ms
+ GET /api/auth/session 200 in 13ms
+ GET /api/auth/session 200 in 12ms
+ GET /api/auth/session 200 in 39ms
+ GET /api/auth/session 200 in 20ms
+ GET / 200 in 68ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 235ms
+ ✓ Compiled in 774ms (2274 modules)
+ GET / 200 in 72ms
+ GET /login 200 in 71ms
+ GET /api/auth/session 200 in 42ms
+ GET / 200 in 42ms
+ GET /deals 200 in 38ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 236ms
+ GET /deals/1 200 in 42ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 208ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 11ms
+ ○ Compiling /training ...
+ ✓ Compiled /training in 565ms (1264 modules)
+ GET /training 200 in 697ms
+ GET /login 200 in 135ms
+ GET /training 200 in 12ms
+ ✓ Compiled /_error in 348ms (2268 modules)
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 662ms
+ ✓ Compiled in 315ms (2282 modules)
+ GET /training 200 in 67ms
+ GET /login 200 in 67ms
+ GET /policies 200 in 38ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 239ms
+ GET / 200 in 37ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 218ms
+ GET /deals 200 in 36ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 219ms
+ GET /deals/1 200 in 37ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 209ms
+ GET /api/auth/session 200 in 42ms
+ ○ Compiling /api/reports/austrac-pack ...
+ ✓ Compiled /api/reports/austrac-pack in 1037ms (2455 modules)
+ POST /api/reports/austrac-pack 200 in 1226ms
+ GET /api/auth/session 200 in 89ms
+ GET / 200 in 86ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 260ms
+ GET /deals 200 in 48ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 219ms
+ GET / 200 in 34ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 218ms
+ GET /deals 200 in 34ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 216ms
+ GET /deals/1 200 in 44ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 209ms
+ POST /api/reports/austrac-pack 200 in 24ms
+ GET / 200 in 54ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 227ms
+ GET /training 200 in 51ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 218ms
+ GET /policies 200 in 53ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 220ms
+ GET / 200 in 37ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 222ms
+ GET /api/auth/session 200 in 26ms
+ GET /api/auth/session 200 in 60ms
+ GET /api/auth/session 200 in 14ms
+ GET /api/auth/session 200 in 66ms
+ GET /api/auth/session 200 in 19ms

@@ -1,26 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+/* Kycira Brand Theme Variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand Colors - FirstAML Inspired Light Theme */
+  --brand-bg: 0 0% 100%;
+  --brand-elevated: 215 20% 98%;
+  --brand-card: 0 0% 100%;
+  --brand-foreground: 213 27% 27%;
+  --brand-muted: 215 16% 47%;
+  --brand-accent: #0EA5E9;
+  --brand-accent-600: #0284C7;
+  --brand-accent-700: #0369A1;
+  --brand-warning: #F97316;
+  --brand-danger: #DC2626;
+
+  /* Extended Palette - Clean Professional */
+  --slate-50: #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-300: #CBD5E1;
+  --slate-400: #94A3B8;
+  --slate-500: #64748B;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1E293B;
+  --slate-900: #0F172A;
+
+  /* Radius */
+  --radius: 1rem;
+  
+  /* Shadows */
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-elevation: 0 20px 40px rgba(0, 0, 0, 0.4);
+  --shadow-focus: 0 0 0 3px rgba(89, 243, 195, 0.35);
+
+  /* Gradients - Light Theme */
+  --gradient-hero: radial-gradient(ellipse at top right, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
+  --gradient-accent: linear-gradient(45deg, #0EA5E9 0%, #3B82F6 100%);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
+
+  /* Light Theme - FirstAML Inspired */
+  --background: 0 0% 100%;
+  --foreground: 213 27% 27%;
+  --card: 0 0% 100%;
+  --card-foreground: 213 27% 27%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 213 27% 27%;
+  --primary: 14 165 233;
+  --primary-foreground: 255 255 255;
+  --secondary: 241 245 249;
+  --secondary-foreground: 213 27% 27%;
+  --muted: 248 250 252;
+  --muted-foreground: 215 16% 47%;
+  --accent: 14 165 233;
+  --accent-foreground: 255 255 255;
+  --destructive: 220 38 38;
+  --destructive-foreground: 255 255 255;
+  --border: 226 232 240;
+  --input: 255 255 255;
+  --ring: 14 165 233;
+
+  /* Charts - No Yellow/Brown */
+  --chart-1: 89 243 195;
+  --chart-2: 236 139 94;
+  --chart-3: 229 62 62;
+  --chart-4: 124 131 255;
+  --chart-5: 139 92 246;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Light theme (optional) */
+.theme-light {
+  --background: 255 255 255;
+  --foreground: 30 41 59;
+  --card: 255 255 255;
+  --card-foreground: 30 41 59;
+  --popover: 255 255 255;
+  --popover-foreground: 30 41 59;
+  --primary: 25 197 151;
+  --primary-foreground: 255 255 255;
+  --secondary: 241 245 249;
+  --secondary-foreground: 30 41 59;
+  --muted: 248 250 252;
+  --muted-foreground: 100 116 139;
+  --accent: 25 197 151;
+  --accent-foreground: 255 255 255;
+  --destructive: 244 63 94;
+  --destructive-foreground: 255 255 255;
+  --border: 226 232 240;
+  --input: 241 245 249;
+  --ring: 25 197 151;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground)) !important;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: var(--gradient-hero);
+    background-attachment: fixed;
+  }
+
+  /* Force dark grey text - debugging */
+  * {
+    color: inherit;
+  }
+  
+  .text-foreground {
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  .text-muted-foreground {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  h1 {
+    @apply text-4xl font-extrabold;
+  }
+
+  h2 {
+    @apply text-3xl font-bold;
+  }
+
+  h3 {
+    @apply text-2xl font-bold;
+  }
+
+  h4 {
+    @apply text-xl font-semibold;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-none;
+    box-shadow: var(--shadow-focus);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--brand-elevated);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--brand-muted);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-accent);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom utility classes */
+@layer utilities {
+  .text-gradient {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass-card {
+    background: var(--brand-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(8px);
+  }
+
+  .elevation-card {
+    box-shadow: var(--shadow-elevation);
+  }
+
+  .brand-glow {
+    background: var(--gradient-glow);
+  }
+}
+
+/* Animation keyframes */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(8px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes scale-in {
+  from { 
+    opacity: 0; 
+    transform: scale(0.98); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 200ms ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 200ms ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 200ms ease-out;
 }

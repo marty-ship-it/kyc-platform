@@ -1,0 +1,60 @@
+interface DvsResult {
+  status: 'PASS' | 'FAIL' | 'MANUAL'
+  documentNumber?: string
+  documentType?: string
+  givenNames?: string
+  surname?: string
+  dateOfBirth?: string
+  nationality?: string
+  verificationScore?: number
+  verificationDate: string
+  issuer?: string
+  error?: string
+  message?: string
+}
+
+const mockResponses: Record<string, DvsResult> = {
+  'passport_123456789': {
+    status: 'PASS',
+    documentNumber: '123456789',
+    documentType: 'Australian Passport',
+    givenNames: 'James',
+    surname: 'Chen',
+    dateOfBirth: '1985-03-15',
+    nationality: 'Australian',
+    verificationScore: 95,
+    verificationDate: '2024-01-15T10:30:00Z',
+    issuer: 'Australian Passport Office'
+  },
+  'passport_987654321': {
+    status: 'FAIL',
+    documentNumber: '987654321',
+    documentType: 'Australian Passport',
+    error: 'Document verification failed - expired document',
+    verificationDate: '2024-01-15T10:30:00Z'
+  },
+  'default': {
+    status: 'MANUAL',
+    message: 'Document requires manual verification',
+    verificationDate: '2024-01-15T10:30:00Z'
+  }
+}
+
+export class DvsClient {
+  static async verifyDocument(documentNumber: string, documentType: string = 'passport'): Promise<DvsResult> {
+    const key = `${documentType}_${documentNumber}`
+    
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    return mockResponses[key] || mockResponses.default
+  }
+
+  static async verifyIdentity(
+    documentNumber: string, 
+    givenNames: string, 
+    surname: string, 
+    dateOfBirth: string
+  ): Promise<DvsResult> {
+    return this.verifyDocument(documentNumber)
+  }
+}

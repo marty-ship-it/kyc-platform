@@ -1,0 +1,4 @@
+Date,Transaction Type,Amount,Currency,Direction,Counterparty,Method,Reference,Cross Border
+2024-01-15,DEPOSIT,1200000,AUD,IN,James Chen Trust Account,BANK,Property Settlement - 12 Seaview Rd,false
+2024-01-10,DEPOSIT,50000,AUD,IN,Coastal Realty Trust,BANK,Initial Deposit,false
+2024-01-08,DEPOSIT,25000,USD,IN,International Investment Group,BANK,Foreign Investment,true
