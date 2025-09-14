@@ -1,28 +1,24 @@
-import { withAuth } from "next-auth/middleware"
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-export default withAuth(
-  function middleware(req) {
-    // Allow all requests to pass through
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Always allow access to login, public-test, and API auth routes
-        if (
-          req.nextUrl.pathname.startsWith('/login') ||
-          req.nextUrl.pathname.startsWith('/public-test') ||
-          req.nextUrl.pathname.startsWith('/api/auth') ||
-          req.nextUrl.pathname === '/'
-        ) {
-          return true
-        }
-        
-        // For all other routes, require authentication
-        return !!token
-      },
-    },
+export function middleware(request: NextRequest) {
+  // Allow all requests to public routes
+  const publicRoutes = ['/login', '/public-test', '/', '/api/auth']
+  const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
+  
+  if (isPublicRoute) {
+    return NextResponse.next()
   }
-)
+  
+  // For protected routes, redirect to login if no session
+  const token = request.cookies.get('next-auth.session-token') || request.cookies.get('__Secure-next-auth.session-token')
+  
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+  
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: [
