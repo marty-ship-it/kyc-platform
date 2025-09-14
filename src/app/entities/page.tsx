@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,7 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Navbar from '@/components/layout/Navbar'
 import Link from 'next/link'
 import { Search, Plus, Building2, User, Users, Briefcase } from 'lucide-react'
-import { useState, useEffect } from 'react'
 
 interface Entity {
   id: string
