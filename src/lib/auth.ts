@@ -79,7 +79,8 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET || 'demo-secret-key-for-kycira-platform'
+  secret: process.env.NEXTAUTH_SECRET || 'demo-secret-key-for-kycira-platform',
+  trustHost: true
 }
 
 export default NextAuth(authOptions)
