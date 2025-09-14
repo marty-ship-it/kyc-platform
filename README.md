@@ -1,15 +1,15 @@
-# AML/CTF Compliance Platform
+# Kycira AML/CTF Compliance Platform
 
-A comprehensive demo web application showcasing how an SMB real estate agency can achieve AML/CTF compliance for high-value property sales in Australia.
+A comprehensive entity-centric AML/CTF compliance platform showcasing modern KYC management, automated screening, and case management for Australian real estate agencies.
 
 ## 🏗️ Tech Stack
 
-- **Framework**: Next.js 14 (App Router) with TypeScript
+- **Framework**: Next.js 15 (App Router) with TypeScript
 - **Database**: Prisma + SQLite (file-based for easy setup)
 - **Authentication**: NextAuth with credential provider
 - **UI**: shadcn/ui components with TailwindCSS
 - **PDF Generation**: pdf-lib for AUSTRAC reporting
-- **Mock Integrations**: DVS, PEP/Sanctions screening, bank feeds
+- **Mock Integrations**: DVS, PEP/Sanctions screening, automation services
 
 ## 🚀 Quick Start
 
@@ -30,183 +30,237 @@ npm run db:reset
 npm run dev
 ```
 
-The application will be available at `http://localhost:3001`
+The application will be available at `http://localhost:4287`
 
 ## 👥 Demo Users
 
 The system comes pre-seeded with three user accounts representing different roles:
 
-| Role | Name | Email | Password |
-|------|------|-------|----------|
-| **Director** | Sarah Mitchell | sarah@coastalrealty.com | Password123! |
-| **Agent** | Luca Romano | luca@coastalrealty.com | Password123! |
-| **Compliance Officer** | Priya Sharma | priya@coastalrealty.com | Password123! |
+| Role | Name | Email | Password | Access Level |
+|------|------|-------|----------|-------------|
+| **Director** | Sarah Mitchell | sarah@coastalrealty.com | Password123! | Full system access |
+| **Compliance** | Priya Sharma | priya@coastalrealty.com | Password123! | Case management & reporting |
+| **Agent** | Luca Romano | luca@coastalrealty.com | Password123! | Entity screening & basic operations |
 
-## 🎯 Demo Script: $1.2M Property Sale
+## 🎯 Demo Script: Entity-Centric Compliance
 
-Follow this walkthrough to see the complete AML/CTF compliance process:
+Follow this walkthrough to see the complete entity-centric compliance process:
 
 ### Step 1: Login as Agent (Luca)
-1. Navigate to `http://localhost:3001`
+1. Navigate to `http://localhost:4287`
 2. Login with: `luca@coastalrealty.com` / `Password123!`
-3. View the dashboard showing compliance overview
+3. View the dashboard showing entity and case overview
 
-### Step 2: Access the Demo Deal
-1. Click "Deals" in the navigation
-2. Find "12 Seaview Rd, Bondi NSW - $1,200,000"
-3. Click "View" to open the deal workspace
-4. Notice the deal tabs: Overview, Parties, KYC, Screening, Risk, Transactions, Reports
+### Step 2: Explore Entity Management
+1. Click "Entities" in the navigation
+2. View the entity list showing individuals and organizations
+3. Notice James Chen has a MEDIUM risk score with adverse media findings
+4. Click "View" to open the entity workspace
+5. Explore tabs: Overview, Cases, KYC History, Transactions, Audit Trail
 
-### Step 3: Complete KYC Process
-1. Click the "KYC" tab
-2. View buyer information (James Chen)
-3. Click "Run KYC Check" 
-4. Mock DVS verification will show PASS status
-5. Upload mock documents (passport, proof of address)
-6. Toggle liveness check to "Pass"
+### Step 3: Review Auto-Screening
+1. In James Chen's entity profile, check the screening history
+2. Notice auto-screening triggered when entity was created
+3. Review adverse media findings from offshore investment fund connections
+4. See how the system automatically created a RISK_ESCALATION case
 
-### Step 4: Run Screening
-1. Click the "Screening" tab
-2. Click "Run Screening" for James Chen
-3. Review results showing:
-   - PEP: No
-   - Sanctions: No
-   - Adverse Media: Yes (Medium risk - offshore investment fund)
+### Step 4: Case Management Workflow
+1. Click "Cases" in navigation
+2. View active compliance cases with reasons (THRESHOLD, RISK_ESCALATION, ADVERSE_MEDIA, MANUAL)
+3. Open the case for James Chen (RISK_ESCALATION)
+4. Review the case timeline with notes from compliance team
+5. Notice linked reports and entity information
 
-### Step 5: Risk Assessment
-1. Click "Risk" tab
-2. Complete the risk questionnaire:
-   - Transaction amount: $1.2M
-   - Source of funds: Investment proceeds
-   - Customer risk: Medium (due to adverse media)
-3. System calculates overall risk score: MEDIUM
-4. Add rationale notes
+### Step 5: KYC Re-use Functionality
+1. Go to "Deals" and view the $1.2M property transaction
+2. Notice KYC reuse banners showing existing verification status
+3. System shows James Chen's KYC is current and can be reused
+4. View how time-based validation prevents outdated KYC reuse
 
-### Step 6: Transaction Monitoring
-1. Click "Transactions" tab
-2. Click "Ingest Bank Feed"
-3. System imports mock transactions including $1.2M deposit
-4. Notice threshold alert (>$10K) triggered
-5. Review transaction details and counterparties
+### Step 6: Transaction Analysis
+1. In the deal or entity view, check transactions
+2. See INTERNAL_TRANSFER badges for company-to-company transfers
+3. Review cross-border and structured transaction flags
+4. Notice automatic threshold detection for large transactions
 
-### Step 7: Generate Reports
-1. Click "Reports" tab
-2. Notice TTR (Threshold Transaction Report) required
-3. Click "Generate AUSTRAC Pack"
-4. Complete TTR wizard with transaction details
-5. Generate PDF report with JSON appendix
-
-### Step 8: Switch to Compliance Officer (Priya)
+### Step 7: Switch to Compliance Officer (Priya)
 1. Logout and login as: `priya@coastalrealty.com` / `Password123!`
-2. Navigate back to the deal
-3. Review and approve the TTR report
-4. Mark deal as compliance complete
+2. Access case management with enhanced permissions
+3. Review and progress case statuses: OPEN → UNDER_REVIEW → SUBMITTED → CLOSED
+4. Add compliance notes and link reports to cases
+5. Generate TTR reports directly from case workflow
 
-### Step 9: Director Overview (Sarah)
+### Step 8: Director Overview (Sarah)
 1. Logout and login as: `sarah@coastalrealty.com` / `Password123!`
-2. View dashboard compliance summary
-3. Check training status and policy compliance
-4. Review audit logs and system health
+2. Access admin panel with system configuration
+3. Configure auto-screening automation settings
+4. Review KYC refresh requirements dashboard
+5. Monitor system health and user activity
+6. Access comprehensive audit trails
 
-## 📋 Key Features Demonstrated
+## 🌟 Key Features
 
-### Compliance Workflow
-- ✅ Customer Due Diligence (CDD) with document verification
-- ✅ PEP, sanctions, and adverse media screening
-- ✅ Risk assessment and scoring
-- ✅ Transaction monitoring and threshold detection
-- ✅ Automated reporting (TTR/SMR)
-- ✅ Evidence collection and retention
-- ✅ Audit trail and logging
+### Entity-Centric Architecture
+- ✅ Unified entity profiles for individuals and organizations
+- ✅ Entity risk scoring with rationale tracking
+- ✅ Cross-deal entity relationship mapping
+- ✅ Comprehensive entity audit trails
 
-### Role-Based Access
-- **Agents**: Create deals, onboard clients, collect documents
-- **Compliance Officers**: Review flags, approve reports, manage policies
-- **Directors**: Oversight dashboard, approve final reports, manage staff
+### Case Management System
+- ✅ Automated case creation based on risk triggers
+- ✅ Case reasons: THRESHOLD, RISK_ESCALATION, ADVERSE_MEDIA, MANUAL
+- ✅ Timeline-based case notes and documentation
+- ✅ Case-linked report generation
+- ✅ Status progression workflow (OPEN → UNDER_REVIEW → SUBMITTED → CLOSED)
 
-### Regulatory Features
-- **AUSTRAC Compliance**: TTR generation for transactions >$10K
-- **7-Year Retention**: All evidence tagged for retention
-- **DVS Integration**: Document verification service
-- **Real-time Monitoring**: Transaction screening and alerts
+### Automation & Screening
+- ✅ Auto-screening on entity creation and updates
+- ✅ Configurable automation triggers and settings
+- ✅ Risk-based KYC refresh requirements
+- ✅ Threshold-based case escalation
+
+### KYC Re-use Intelligence
+- ✅ Time-based KYC validity checking (90-day reuse window)
+- ✅ Risk-adjusted refresh requirements
+- ✅ Cross-deal KYC status tracking
+- ✅ Compliance banners showing reuse eligibility
+
+### Advanced Transaction Handling
+- ✅ Internal transfer detection and labeling
+- ✅ Cross-border transaction flagging
+- ✅ Structured transaction identification
+- ✅ Enhanced transaction type support (RENTAL, INTERNAL_TRANSFER)
+
+### Role-Based Access Control (RBAC)
+- ✅ Granular permission system
+- ✅ Role-based UI component rendering
+- ✅ Secure API endpoint protection
+- ✅ Feature-level access controls
+
+### Enhanced Reporting & Audit
+- ✅ Case-linked report generation
+- ✅ Comprehensive audit event tracking
+- ✅ Export capabilities for compliance reviews
+- ✅ Multi-level audit trail visibility
 
 ## 🗂️ Project Structure
 
 ```
 ├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── login/             # Authentication
-│   │   ├── deals/             # Deal management
-│   │   └── api/auth/          # NextAuth API routes
-│   ├── components/            # Reusable UI components
-│   │   ├── auth/              # Authentication components
-│   │   ├── layout/            # Navigation and layout
-│   │   └── ui/                # shadcn/ui components
+│   ├── app/                      # Next.js App Router pages
+│   │   ├── admin/               # Admin panel and settings
+│   │   ├── entities/            # Entity-centric workspaces
+│   │   ├── cases/               # Case management system
+│   │   ├── deals/               # Deal management (legacy compatibility)
+│   │   └── api/                 # API routes and integrations
+│   ├── components/
+│   │   ├── rbac/               # Role-based access components
+│   │   ├── audit-trail.tsx     # Enhanced audit visualization
+│   │   ├── kyc-reuse-banner.tsx # KYC reuse status display
+│   │   └── ui/                 # UI component library
 │   └── lib/
-│       ├── services/          # Mock service integrations
-│       │   ├── dvsClient.ts   # Document verification
-│       │   ├── screeningClient.ts # PEP/sanctions screening
-│       │   ├── bankFeed.ts    # Transaction import
-│       │   ├── pdf.ts         # Report generation
-│       │   └── storage.ts     # Evidence storage
-│       └── auth.ts            # NextAuth configuration
+│       ├── services/           # Business logic services
+│       │   ├── kyc-reuse.ts    # KYC reuse intelligence
+│       │   ├── audit.ts        # Audit event management
+│       │   └── screeningClient.ts # Enhanced screening
+│       ├── automation.ts       # Auto-screening service
+│       └── rbac.ts             # Role-based access control
 ├── prisma/
-│   ├── schema.prisma          # Database schema
-│   └── seed.ts                # Demo data seeding
-├── fixtures/                  # Mock integration data
-│   ├── dvs.json              # DVS responses
-│   ├── screening.json        # Screening results
-│   └── bank.csv              # Bank transactions
-└── evidence/                 # Evidence file storage
+│   ├── schema.prisma          # Updated entity-centric schema
+│   └── seed.ts                # Enhanced demo data
 ```
 
 ## 🔄 Available Scripts
 
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
+npm run dev          # Start development server (port 4287)
+npm run build        # Build for production with Prisma generation
+npm run start        # Start production server (port 3001)
 npm run lint         # Run ESLint
 npm run typecheck    # Run TypeScript checks
-npm run db:reset     # Reset database and reseed
+npm run db:reset     # Reset database and reseed with new schema
 npm run test:e2e     # Run end-to-end tests
 npm run test:e2e:ui  # Run tests with Playwright UI
 ```
 
-## ⚠️ Important Disclaimers
+## 🧪 Testing
 
-- **Demo Only**: This is a demonstration system with mock integrations
-- **Not Production Ready**: Not suitable for real compliance operations
-- **Local Data**: All data stored locally in SQLite database
-- **Mock Services**: DVS, screening, and bank feeds are simulated
-- **Australian Focus**: Designed for Australian AML/CTF regulations
+Basic unit tests are included for core services:
 
-## 🔧 Mock Integrations
+```bash
+# Run RBAC tests (if Jest is configured)
+npm test -- rbac.test.ts
 
-All external services are mocked using local fixtures:
+# Run KYC reuse tests
+npm test -- kyc-reuse.test.ts
+```
 
-- **DVS**: Returns PASS for passport "123456789"
-- **Screening**: Shows medium risk for "James Chen" due to offshore funds
-- **Bank Feed**: Imports $1.2M transaction from fixtures/bank.csv
-- **Storage**: Saves files locally in /evidence directory
+## 📊 Role Permissions Matrix
 
-## 📊 Compliance Dashboard Features
+| Permission | Agent | Compliance | Director |
+|------------|-------|------------|----------|
+| View Entities | ✅ | ✅ | ✅ |
+| Create Entities | ❌ | ✅ | ✅ |
+| Screen Entities | ✅ | ✅ | ✅ |
+| View Cases | ✅ | ✅ | ✅ |
+| Create Cases | ❌ | ✅ | ✅ |
+| Manage Cases | ❌ | ✅ | ✅ |
+| Generate Reports | ❌ | ✅ | ✅ |
+| Submit Reports | ❌ | ✅ | ✅ |
+| Admin Panel | ❌ | ❌ | ✅ |
+| User Management | ❌ | ❌ | ✅ |
+| Automation Config | ❌ | ✅ | ✅ |
 
-- Real-time compliance score calculation
-- Active deal tracking and alerts
-- Staff training management
-- Policy document versioning
-- System health monitoring
-- Audit event logging
+## 🔧 Configuration
 
-## 🎓 Training Module
+### Auto-screening Settings
+Configure in Admin Panel:
+- **Auto-screen on Entity Creation**: Automatically screen new entities
+- **Auto-screen on Entity Updates**: Re-screen when key attributes change
+- **Batch Screening**: Manual trigger for bulk entity screening
 
-- AML/CTF basics course
-- KYC procedures training
-- AUSTRAC reporting requirements
-- Staff completion tracking
-- Certification management
+### KYC Refresh Windows
+- **Valid Reuse Period**: 90 days (configurable)
+- **Review Recommended**: 365 days
+- **Risk-based Refresh**: 
+  - HIGH risk: 60 days
+  - MEDIUM risk: 180 days  
+  - LOW risk: 365 days
+
+## 🏃‍♂️ Migration Guide
+
+This version implements significant architectural changes:
+
+### Database Schema Updates
+- Entity model enhanced with new fields (fullName, legalName, riskScore, etc.)
+- Case model updated with reason enum and timeline notes
+- Transaction types expanded (RENTAL, INTERNAL_TRANSFER)
+- New audit event types for automation
+
+### Breaking Changes
+- Entity `name` field split into `fullName`/`legalName`
+- Case `priority` replaced with `reason` enum
+- Case `assignedTo` replaced with `createdBy`
+- New RBAC permission requirements
+
+## ⚠️ Important Notes
+
+- **Demo Platform**: Mock integrations for demonstration purposes
+- **Local Development**: SQLite database for easy setup
+- **Australian Compliance**: Focused on AUSTRAC requirements
+- **Entity-Centric**: Complete architectural shift from deal-centric model
+
+## 🆕 Recent Updates (MVP v2)
+
+- ✅ Entity-centric architecture implementation
+- ✅ Advanced case management with timeline notes
+- ✅ Auto-screening automation service
+- ✅ KYC re-use intelligence system
+- ✅ Enhanced transaction categorization
+- ✅ Role-based access control (RBAC)
+- ✅ Comprehensive audit trail enhancements
+- ✅ Admin panel for system configuration
 
 ---
 
-**Coastal Realty Pty Ltd Demo** - Showcasing modern AML/CTF compliance for Australian real estate
+**Kycira Platform** - Modern entity-centric AML/CTF compliance for Australian financial services

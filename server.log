@@ -418,3 +418,116 @@
  GET /login 200 in 47ms
  GET /api/auth/session 200 in 1382ms
  ✓ Compiled in 334ms (1487 modules)
+ ✓ Compiled /api/auth/[...nextauth] in 206ms (1031 modules)
+ GET /api/auth/session 200 in 312ms
+ ○ Compiling /deals ...
+ ✓ Compiled /deals in 696ms (1813 modules)
+ GET /deals 200 in 794ms
+ ✓ Compiled /_error in 257ms (2153 modules)
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 628ms
+ ✓ Compiled /deals/[id] in 427ms (2223 modules)
+ GET /deals/1 200 in 777ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 247ms
+ GET /api/auth/session 200 in 86ms
+ GET /api/auth/session 200 in 40ms
+ GET /api/auth/session 200 in 18ms
+ ✓ Compiled in 262ms (909 modules)
+ ✓ Compiled in 99ms (909 modules)
+ ✓ Compiled in 84ms (909 modules)
+ ✓ Compiled in 79ms (909 modules)
+ ✓ Compiled in 91ms (909 modules)
+ ✓ Compiled in 77ms (909 modules)
+ ✓ Compiled in 88ms (909 modules)
+ ✓ Compiled in 77ms (909 modules)
+ ✓ Compiled in 77ms (909 modules)
+ ✓ Compiled in 85ms (909 modules)
+ ✓ Compiled in 89ms (909 modules)
+ ✓ Compiled in 81ms (909 modules)
+ ✓ Compiled in 78ms (909 modules)
+ ✓ Compiled in 251ms (909 modules)
+ ✓ Compiled in 86ms (909 modules)
+ ✓ Compiled in 77ms (909 modules)
+ ✓ Compiled in 83ms (909 modules)
+ ✓ Compiled in 93ms (909 modules)
+ ✓ Compiled in 93ms (909 modules)
+ ✓ Compiled in 77ms (909 modules)
+ ✓ Compiled in 93ms (909 modules)
+ ✓ Compiled in 91ms (909 modules)
+ ✓ Compiled in 147ms (909 modules)
+ ✓ Compiled in 381ms (1786 modules)
+ ✓ Compiled in 101ms (909 modules)
+ ✓ Compiled in 280ms (910 modules)
+ ✓ Compiled in 171ms (910 modules)
+ ✓ Compiled in 296ms (1787 modules)
+ ✓ Compiled in 235ms (910 modules)
+ ✓ Compiled in 91ms (910 modules)
+ ✓ Compiled in 69ms (910 modules)
+ ✓ Compiled in 126ms (1787 modules)
+ ✓ Compiled in 84ms (910 modules)
+ ✓ Compiled in 79ms (910 modules)
+ ✓ Compiled in 80ms (910 modules)
+ ✓ Compiled in 99ms (910 modules)
+ ✓ Compiled in 138ms (1787 modules)
+ ✓ Compiled in 163ms (910 modules)
+ ✓ Compiled in 244ms (911 modules)
+ ✓ Compiled in 112ms (911 modules)
+ ✓ Compiled in 137ms (1788 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 555ms (1874 modules)
+ GET / 200 in 785ms
+ ✓ Compiled /api/auth/[...nextauth] in 356ms (2203 modules)
+ GET /api/auth/session 200 in 534ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 701ms
+ ○ Compiling /entities ...
+ ✓ Compiled /entities in 686ms (2362 modules)
+ ⨯ TypeError: Cannot read properties of undefined (reading 'findMany')
+    at getEntities (src/app/entities/page.tsx:12:40)
+    at EntityList (src/app/entities/page.tsx:82:26)
+  10 |
+  11 | async function getEntities() {
+> 12 |   const entities = await prisma.entity.findMany({
+     |                                        ^
+  13 |     include: {
+  14 |       org: true,
+  15 |       parties: { {
+  digest: '142046956'
+}
+ GET /entities 200 in 807ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 252ms
+ ⨯ TypeError: Cannot read properties of undefined (reading 'findMany')
+    at getEntities (src/app/entities/page.tsx:12:40)
+    at EntityList (src/app/entities/page.tsx:82:26)
+  10 |
+  11 | async function getEntities() {
+> 12 |   const entities = await prisma.entity.findMany({
+     |                                        ^
+  13 |     include: {
+  14 |       org: true,
+  15 |       parties: { {
+  digest: '142046956'
+}
+ GET /entities 200 in 178ms
+ GET /api/auth/session 200 in 53ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 214ms
+ ⨯ TypeError: Cannot read properties of undefined (reading 'findMany')
+    at getEntities (src/app/entities/page.tsx:12:40)
+    at EntityList (src/app/entities/page.tsx:82:26)
+  10 |
+  11 | async function getEntities() {
+> 12 |   const entities = await prisma.entity.findMany({
+     |                                        ^
+  13 |     include: {
+  14 |       org: true,
+  15 |       parties: { {
+  digest: '142046956'
+}
+ GET /entities 200 in 78ms
+ GET /api/auth/session 200 in 9ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 209ms
+[?25h

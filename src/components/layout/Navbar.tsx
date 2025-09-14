@@ -4,9 +4,11 @@ import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Home, FileText, Users, Settings, BookOpen, LogOut } from 'lucide-react'
+import { Home, FileText, Users, Settings, BookOpen, LogOut, Building2, FolderOpen } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { RoleNavItem, UserRoleBadge } from '@/components/rbac/RoleGuard'
+import { PERMISSIONS } from '@/lib/rbac'
 
 export default function Navbar() {
   const { data: session } = useSession()
@@ -55,24 +57,75 @@ export default function Navbar() {
             </Link>
             
             <div className="hidden md:flex space-x-1">
-              {[
-                { href: '/', icon: Home, label: 'Dashboard' },
-                { href: '/deals', icon: FileText, label: 'Deals' },
-                { href: '/training', icon: BookOpen, label: 'Training' },
-                { href: '/policies', icon: Settings, label: 'Policies' },
-              ].map((item) => (
-                <motion.div key={item.href} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href="/"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 transition-all duration-200"
+                >
+                  <Home className="h-4 w-4" />
+                  <span>Dashboard</span>
+                </Link>
+              </motion.div>
+              
+              <RoleNavItem permission={PERMISSIONS.ENTITY_READ}>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Link
-                    href={item.href}
+                    href="/entities"
                     className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 transition-all duration-200"
                   >
-                    <item.icon className="h-4 w-4" />
-                    <span>{item.label}</span>
+                    <Building2 className="h-4 w-4" />
+                    <span>Entities</span>
                   </Link>
                 </motion.div>
-              ))}
+              </RoleNavItem>
               
-              {(session?.user?.role === 'DIRECTOR' || session?.user?.role === 'COMPLIANCE') && (
+              <RoleNavItem permission={PERMISSIONS.CASE_READ}>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/cases"
+                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 transition-all duration-200"
+                  >
+                    <FolderOpen className="h-4 w-4" />
+                    <span>Cases</span>
+                  </Link>
+                </motion.div>
+              </RoleNavItem>
+              
+              <RoleNavItem permission={PERMISSIONS.DEAL_READ}>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/deals"
+                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 transition-all duration-200"
+                  >
+                    <FileText className="h-4 w-4" />
+                    <span>Deals</span>
+                  </Link>
+                </motion.div>
+              </RoleNavItem>
+              
+              <RoleNavItem permission={PERMISSIONS.TRAINING_READ}>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/training"
+                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 transition-all duration-200"
+                  >
+                    <BookOpen className="h-4 w-4" />
+                    <span>Training</span>
+                  </Link>
+                </motion.div>
+              </RoleNavItem>
+              
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href="/policies"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 transition-all duration-200"
+                >
+                  <Settings className="h-4 w-4" />
+                  <span>Policies</span>
+                </Link>
+              </motion.div>
+              
+              <RoleNavItem permission={PERMISSIONS.ADMIN_SETTINGS}>
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Link
                     href="/admin"
@@ -82,7 +135,7 @@ export default function Navbar() {
                     <span>Admin</span>
                   </Link>
                 </motion.div>
-              )}
+              </RoleNavItem>
             </div>
           </div>
           
@@ -93,9 +146,7 @@ export default function Navbar() {
                   <div className="font-medium text-foreground">{session.user.name}</div>
                   <div className="flex items-center space-x-2">
                     <span className="text-xs text-muted-foreground">{session.user.email}</span>
-                    <Badge variant="outline" className={`text-xs border ${getRoleBadgeColor(session.user.role)}`}>
-                      {session.user.role.toLowerCase()}
-                    </Badge>
+                    <UserRoleBadge className="text-xs" />
                   </div>
                 </div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

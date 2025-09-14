@@ -22,7 +22,7 @@ const users = [
     email: 'priya@coastalrealty.com', 
     password: 'Password123!',
     name: 'Priya Sharma',
-    role: 'COMPLIANCE_OFFICER'
+    role: 'COMPLIANCE'
   }
 ]
 

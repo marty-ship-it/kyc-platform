@@ -17,6 +17,7 @@ model User {
   updatedAt    DateTime @updatedAt
 
   createdDeals     Deal[]
+  createdCases     Case[]
   auditEvents      AuditEvent[]
   trainingRecords  TrainingRecord[]
 
@@ -30,10 +31,64 @@ model Organisation {
   timezone String @default("Australia/Sydney")
 
   deals            Deal[]
+  entities         Entity[]
+  cases            Case[]
   policyDocuments  PolicyDocument[]
   auditEvents      AuditEvent[]
 
   @@map("organisations")
+}
+
+model Entity {
+  id            String     @id @default(cuid())
+  orgId         String
+  organisation  Organisation @relation(fields: [orgId], references: [id])
+  // Natural person OR organisation
+  kind          String     // "INDIVIDUAL" | "ORGANISATION"
+  fullName      String?
+  legalName     String?
+  dob           DateTime?
+  country       String?
+  abnAcn        String?
+  // Current risk posture
+  riskScore     String     @default("LOW") // "LOW" | "MEDIUM" | "HIGH"
+  riskRationale String?
+  // Latest KYC/Screening snapshot
+  lastKycId     String?
+  lastScreeningId String?
+  // Links
+  parties       Party[]
+  kycs          KycCheck[]
+  screenings    Screening[]
+  deals         Deal[]     @relation("EntityDeals")
+  cases         Case[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  @@index([orgId, fullName])
+
+  @@map("entities")
+}
+
+model Case {
+  id            String   @id @default(cuid())
+  orgId         String
+  organisation  Organisation @relation(fields: [orgId], references: [id])
+  entityId      String
+  entity        Entity   @relation(fields: [entityId], references: [id])
+  dealId        String?  // optional: case may relate to a deal
+  deal          Deal?    @relation(fields: [dealId], references: [id])
+  reason        CaseReason
+  status        CaseStatus @default(OPEN)
+  notes         Json?     // array of timeline entries with {by, at, text}
+  attachments   EvidenceFile[] // reuse EvidenceFile relation
+  reports       Report[]
+  createdById   String
+  createdBy     User      @relation(fields: [createdById], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  @@index([orgId, entityId, status])
+
+  @@map("cases")
 }
 
 model Deal {
@@ -49,9 +104,11 @@ model Deal {
   orgId           String
   org             Organisation @relation(fields: [orgId], references: [id])
 
+  entities        Entity[]  @relation("EntityDeals") // link primary parties
   parties         Party[]
   transactions    Transaction[]
   reports         Report[]
+  cases           Case[]
   riskAssessment  RiskAssessment?
   evidenceFiles   EvidenceFile[]
 
@@ -61,6 +118,7 @@ model Deal {
 model Party {
   id        String    @id @default(cuid())
   dealId    String
+  entityId  String?
   type      PartyType
   fullName  String
   dob       DateTime?
@@ -71,8 +129,9 @@ model Party {
   createdAt DateTime  @default(now())
 
   deal       Deal         @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  kycCheck   KycCheck?
-  screening  Screening?
+  entity     Entity?      @relation(fields: [entityId], references: [id])
+  kycChecks  KycCheck[]
+  screenings Screening[]
   evidenceFiles EvidenceFile[]
 
   @@map("parties")
@@ -80,28 +139,33 @@ model Party {
 
 model KycCheck {
   id                 String    @id @default(cuid())
-  partyId            String    @unique
+  partyId            String?    
   dvStatus           DvStatus  @default(MANUAL)
   liveness           Boolean   @default(false)
   proofOfAddressUrl  String?
   resultJson         String?
   createdAt          DateTime  @default(now())
+  // add owning Entity (optional for legacy)
+  entityId   String?
+  entity     Entity? @relation(fields: [entityId], references: [id])
 
-  party Party @relation(fields: [partyId], references: [id], onDelete: Cascade)
+  party Party? @relation(fields: [partyId], references: [id], onDelete: Cascade)
 
   @@map("kyc_checks")
 }
 
 model Screening {
   id           String  @id @default(cuid())
-  partyId      String  @unique
+  partyId      String?
   pep          Boolean @default(false)
   sanctions    Boolean @default(false)
   adverseMedia Boolean @default(false)
   resultJson   String?
   createdAt    DateTime @default(now())
+  entityId   String?
+  entity     Entity? @relation(fields: [entityId], references: [id])
 
-  party Party @relation(fields: [partyId], references: [id], onDelete: Cascade)
+  party Party? @relation(fields: [partyId], references: [id], onDelete: Cascade)
 
   @@map("screenings")
 }
@@ -122,13 +186,18 @@ model RiskAssessment {
 model Transaction {
   id             String            @id @default(cuid())
   dealId         String
-  type           TransactionType
+  type           TransactionType   @default(DEPOSIT)
+  subtype        TransactionSubtype?
   amount         Int
   currency       String            @default("AUD")
   direction      TransactionDirection
   counterparty   String
   method         PaymentMethod
+  purpose        String?
   isCrossBorder  Boolean           @default(false)
+  isStructured   Boolean           @default(false)
+  isInternal     Boolean           @default(false)
+  flagged        Boolean           @default(false)
   receivedAt     DateTime
   createdAt      DateTime          @default(now())
 
@@ -140,6 +209,7 @@ model Transaction {
 model Report {
   id          String       @id @default(cuid())
   dealId      String
+  caseId      String?
   kind        ReportKind
   status      ReportStatus @default(DRAFT)
   pdfUrl      String?
@@ -147,7 +217,8 @@ model Report {
   submittedAt DateTime?
   createdAt   DateTime     @default(now())
 
-  deal Deal @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  deal Deal  @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  case Case? @relation(fields: [caseId], references: [id])
 
   @@map("reports")
 }
@@ -182,6 +253,7 @@ model EvidenceFile {
   id           String       @id @default(cuid())
   dealId       String?
   partyId      String?
+  caseId       String?
   kind         EvidenceKind
   fileUrl      String
   metadataJson String?
@@ -189,6 +261,7 @@ model EvidenceFile {
 
   deal  Deal?  @relation(fields: [dealId], references: [id], onDelete: Cascade)
   party Party? @relation(fields: [partyId], references: [id], onDelete: Cascade)
+  case  Case?  @relation(fields: [caseId], references: [id], onDelete: Cascade)
 
   @@map("evidence_files")
 }
@@ -197,14 +270,15 @@ model AuditEvent {
   id          String   @id @default(cuid())
   orgId       String
   userId      String?
-  entity      String
-  entityId    String
+  entityType  String   @default("Deal")
+  entityId    String?
+  caseId      String?
   action      String
   payloadJson String?
   createdAt   DateTime @default(now())
 
-  org  Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  user User?        @relation(fields: [userId], references: [id])
+  org    Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user   User?        @relation(fields: [userId], references: [id])
 
   @@map("audit_events")
 }
@@ -242,6 +316,8 @@ enum RiskScore {
 enum TransactionType {
   DEPOSIT
   BALANCE
+  RENTAL
+  INTERNAL_TRANSFER
 }
 
 enum TransactionDirection {
@@ -276,4 +352,53 @@ enum EvidenceKind {
   KYC_DOC
   TRANSACTION_PROOF
   REPORT
+}
+
+enum EntityType {
+  INDIVIDUAL
+  COMPANY
+  TRUST
+  PARTNERSHIP
+  GOVERNMENT
+  NON_PROFIT
+}
+
+enum EntityStatus {
+  ACTIVE
+  INACTIVE
+  UNDER_REVIEW
+  SUSPENDED
+}
+
+enum CaseStatus {
+  OPEN
+  UNDER_REVIEW
+  SUBMITTED
+  CLOSED
+}
+
+enum CaseReason {
+  THRESHOLD
+  RISK_ESCALATION
+  ADVERSE_MEDIA
+  MANUAL
+}
+
+enum CasePriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TransactionSubtype {
+  PROPERTY_DEPOSIT
+  BALANCE_PAYMENT
+  COMMISSION
+  LEGAL_FEES
+  STAMP_DUTY
+  INSPECTION_FEE
+  CONVEYANCING
+  MARKETING
+  ADVERTISING
 }

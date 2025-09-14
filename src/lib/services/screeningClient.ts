@@ -71,3 +71,48 @@ export class ScreeningClient {
     return this.screenPerson(entityName)
   }
 }
+
+// Helper function to screen an entity by ID and save results to database
+export async function screenEntity(entityId: string): Promise<void> {
+  const { prisma } = await import('../prisma')
+  
+  // Get entity details
+  const entity = await prisma.entity.findUnique({
+    where: { id: entityId },
+    select: {
+      id: true,
+      fullName: true,
+      legalName: true,
+      dob: true,
+      kind: true
+    }
+  })
+  
+  if (!entity) {
+    throw new Error(`Entity ${entityId} not found`)
+  }
+  
+  // Determine name to use for screening
+  const screeningName = entity.fullName || entity.legalName || 'Unknown'
+  
+  // Run screening
+  const result = await ScreeningClient.screenEntity(screeningName)
+  
+  // Save screening result to database
+  await prisma.screening.create({
+    data: {
+      entityId: entityId,
+      pep: result.pep,
+      sanctions: result.sanctions,
+      adverseMedia: result.adverseMedia,
+      resultJson: JSON.stringify({
+        riskScore: result.riskScore,
+        details: result.details,
+        screeningName,
+        lastChecked: result.lastChecked
+      })
+    }
+  })
+  
+  console.log(`✅ Entity ${screeningName} screened successfully (Risk: ${result.riskScore})`)
+}
