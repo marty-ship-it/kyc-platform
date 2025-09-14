@@ -40,7 +40,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center space-x-8">
-            <Link href="/" className="flex items-center space-x-3 group">
+            <Link href="/dashboard" className="flex items-center space-x-3 group">
               <motion.div 
                 className="relative"
                 whileHover={{ scale: 1.05 }}
@@ -59,7 +59,7 @@ export default function Navbar() {
             <div className="hidden md:flex space-x-1">
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link
-                  href="/"
+                  href="/dashboard"
                   className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 transition-all duration-200"
                 >
                   <Home className="h-4 w-4" />
