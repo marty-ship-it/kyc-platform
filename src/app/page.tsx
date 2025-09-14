@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import Navbar from '@/components/layout/Navbar'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -36,7 +35,24 @@ interface DashboardStats {
 }
 
 export default function Dashboard() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login')
+    }
+  }, [status, router])
+
+  if (status === 'loading') {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="text-lg">Loading...</div>
+    </div>
+  }
+
+  if (!session) {
+    return null
+  }
   const [stats, setStats] = useState<DashboardStats>({
     complianceScore: 85,
     activeDeals: 3,
@@ -81,8 +97,7 @@ export default function Dashboard() {
   }
 
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen relative">
+    <div className="min-h-screen relative">
         <Navbar />
         
         <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -443,7 +458,6 @@ export default function Dashboard() {
             </motion.div>
           </motion.div>
         </div>
-      </div>
-    </ProtectedRoute>
+    </div>
   )
 }

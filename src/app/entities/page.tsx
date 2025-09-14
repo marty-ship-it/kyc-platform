@@ -1,4 +1,8 @@
-import { Suspense } from 'react'
+'use client'
+
+import { Suspense, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -7,50 +11,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Navbar from '@/components/layout/Navbar'
 import Link from 'next/link'
 import { Search, Plus, Building2, User, Users, Briefcase } from 'lucide-react'
-import { prisma } from '@/lib/prisma'
+import { useState, useEffect } from 'react'
 
-async function getEntities() {
-  const entities = await prisma.entity.findMany({
-    include: {
-      organisation: true,
-      parties: {
-        include: {
-          deal: true
-        }
-      },
-      cases: {
-        where: {
-          status: {
-            in: ['OPEN', 'UNDER_REVIEW']
-          }
-        }
-      },
-      kycs: {
-        orderBy: {
-          createdAt: 'desc'
-        },
-        take: 1
-      },
-      screenings: {
-        orderBy: {
-          createdAt: 'desc'
-        },
-        take: 1
-      },
-      deals: true,
-      _count: {
-        select: {
-          cases: true,
-          deals: true
-        }
-      }
-    },
-    orderBy: {
-      updatedAt: 'desc'
-    }
-  })
-  
-  return entities
+interface Entity {
+  id: string
+  fullName: string | null
+  legalName: string | null
+  kind: string
+  country: string | null
+  abnAcn: string | null
+  riskScore: string
+  riskRationale: string | null
+  createdAt: Date
+  updatedAt: Date
+  kycs: any[]
+  screenings: any[]
+  cases: any[]
+  deals: any[]
+  _count: {
+    cases: number
+    deals: number
+  }
 }
 
 function getEntityIcon(kind: string) {
@@ -168,7 +149,26 @@ async function EntityList() {
   )
 }
 
-export default async function EntitiesPage() {
+export default function EntitiesPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login')
+    }
+  }, [status, router])
+
+  if (status === 'loading') {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="text-lg">Loading...</div>
+    </div>
+  }
+
+  if (!session) {
+    return null
+  }
+
   return (
     <>
       <Navbar />
