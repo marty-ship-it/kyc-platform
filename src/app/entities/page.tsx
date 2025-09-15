@@ -59,10 +59,25 @@ function getRiskColor(risk: string) {
 
 async function getEntities(): Promise<Entity[]> {
   try {
-    const response = await fetch('/api/entities')
+    const response = await fetch('/api/entities', {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    
     if (!response.ok) {
-      throw new Error('Failed to fetch entities')
+      const errorData = await response.text()
+      console.error('API response error:', response.status, errorData)
+      try {
+        const errorJson = JSON.parse(errorData)
+        console.error('Error details:', errorJson)
+      } catch (e) {
+        // Error data is not JSON
+      }
+      throw new Error(`Failed to fetch entities: ${response.status}`)
     }
+    
     return response.json()
   } catch (error) {
     console.error('Error fetching entities:', error)
