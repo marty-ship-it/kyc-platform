@@ -47,6 +47,7 @@ async function getEntity(id: string) {
         parties: [],
         cases: [],
         deals: [],
+        kycs: mockEntity.kycs || [],
         kycChecks: mockEntity.kycs || [],
         screenings: mockEntity.screenings || []
       }
@@ -271,7 +272,7 @@ export default async function EntityDetailPage({ params }: EntityDetailProps) {
                   <span>ABN/ACN: {entity.abnAcn}</span>
                 </div>
               )}
-              {entity.kycs.length > 0 && (
+              {entity.kycs && entity.kycs.length > 0 && entity.kycs[0].createdAt && (
                 <div className="flex items-center space-x-1">
                   <Calendar className="w-4 h-4" />
                   <span>Last KYC: {new Date(entity.kycs[0].createdAt).toLocaleDateString('en-AU')}</span>
@@ -368,7 +369,7 @@ export default async function EntityDetailPage({ params }: EntityDetailProps) {
                 <div>
                   <label className="text-sm font-medium text-gray-500">Last KYC Review</label>
                   <p className="text-sm text-gray-900">
-                    {entity.kycs.length > 0 ? 
+                    {entity.kycs && entity.kycs.length > 0 && entity.kycs[0].createdAt ? 
                       new Date(entity.kycs[0].createdAt).toLocaleDateString('en-AU') : 
                       'Never'}
                   </p>
