@@ -21,8 +21,36 @@ export const mockEntities = [
       abn: '12 345 678 901',
       timezone: 'Australia/Sydney'
     },
-    kycs: [],
-    screenings: [],
+    kycs: [{
+      id: '1',
+      partyId: '1',
+      entityId: '1',
+      dvStatus: 'PASS',
+      liveness: true,
+      proofOfAddressUrl: null,
+      resultJson: null,
+      createdAt: new Date('2024-01-15')
+    }],
+    screenings: [{
+      id: '1',
+      partyId: '1',
+      entityId: '1',
+      pep: false,
+      sanctions: false,
+      adverseMedia: true,
+      resultJson: null,
+      createdAt: new Date('2024-01-15')
+    }],
+    kycChecks: [{
+      id: '1',
+      partyId: '1',
+      entityId: '1',
+      dvStatus: 'PASS',
+      liveness: true,
+      proofOfAddressUrl: null,
+      resultJson: null,
+      createdAt: new Date('2024-01-15')
+    }],
     _count: {
       cases: 1,
       deals: 1

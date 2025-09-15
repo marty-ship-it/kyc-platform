@@ -46,7 +46,9 @@ async function getEntity(id: string) {
         ...mockEntity,
         parties: [],
         cases: [],
-        deals: []
+        deals: [],
+        kycChecks: mockEntity.kycs || [],
+        screenings: mockEntity.screenings || []
       }
     }
     return null
