@@ -16,13 +16,14 @@ import {
   Building2
 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
+import { mockDeals } from '@/lib/mock-data'
 
 export const dynamic = 'force-dynamic'
 
 async function getDeals() {
-  // Return empty array in production on Vercel
+  // Return mock data in production on Vercel
   if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
-    return []
+    return mockDeals
   }
   
   const deals = await prisma.deal.findMany({

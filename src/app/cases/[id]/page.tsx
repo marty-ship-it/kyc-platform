@@ -26,6 +26,7 @@ import {
   X
 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
+import { mockCases } from '@/lib/mock-data'
 
 export const dynamic = 'force-dynamic'
 import { AuditTrail } from '@/components/audit-trail'
@@ -37,9 +38,10 @@ interface CaseDetailProps {
 }
 
 async function getCase(id: string) {
-  // Return null in production on Vercel
+  // Return mock data in production on Vercel
   if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
-    return null
+    const mockCase = mockCases.find(c => c.id === id)
+    return mockCase || null
   }
   
   const case_ = await prisma.case.findUnique({

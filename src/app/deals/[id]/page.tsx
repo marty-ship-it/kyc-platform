@@ -24,6 +24,7 @@ import {
 import { prisma } from '@/lib/prisma'
 import { KycReuseService } from '@/lib/services/kyc-reuse'
 import { AuditTrail } from '@/components/audit-trail'
+import { mockDeals } from '@/lib/mock-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,8 +35,19 @@ interface DealDetailProps {
 }
 
 async function getDeal(id: string) {
-  // Return null in production on Vercel
+  // Return mock data in production on Vercel
   if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+    const mockDeal = mockDeals.find(d => d.id === id)
+    if (mockDeal) {
+      return {
+        ...mockDeal,
+        transactions: [],
+        reports: [],
+        cases: [],
+        riskAssessment: null,
+        evidenceFiles: []
+      }
+    }
     return null
   }
   

@@ -21,13 +21,14 @@ import {
 import { prisma } from '@/lib/prisma'
 import { RoleGuard } from '@/components/rbac/RoleGuard'
 import { PERMISSIONS } from '@/lib/rbac'
+import { mockCases } from '@/lib/mock-data'
 
 export const dynamic = 'force-dynamic'
 
 async function getCases() {
-  // Return empty array in production on Vercel
+  // Return mock data in production on Vercel
   if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
-    return []
+    return mockCases
   }
   
   const cases = await prisma.case.findMany({

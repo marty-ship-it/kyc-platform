@@ -26,6 +26,7 @@ import {
   Eye
 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
+import { mockEntities } from '@/lib/mock-data'
 
 export const dynamic = 'force-dynamic'
 import { AuditTrail } from '@/components/audit-trail'
@@ -37,8 +38,17 @@ interface EntityDetailProps {
 }
 
 async function getEntity(id: string) {
-  // Return null in production on Vercel
+  // Return mock data in production on Vercel
   if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+    const mockEntity = mockEntities.find(e => e.id === id)
+    if (mockEntity) {
+      return {
+        ...mockEntity,
+        parties: [],
+        cases: [],
+        deals: []
+      }
+    }
     return null
   }
   
