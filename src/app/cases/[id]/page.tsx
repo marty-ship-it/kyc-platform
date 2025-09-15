@@ -26,6 +26,8 @@ import {
   X
 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
+
+export const dynamic = 'force-dynamic'
 import { AuditTrail } from '@/components/audit-trail'
 
 interface CaseDetailProps {

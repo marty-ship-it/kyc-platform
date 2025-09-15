@@ -25,6 +25,8 @@ import { prisma } from '@/lib/prisma'
 import { KycReuseService } from '@/lib/services/kyc-reuse'
 import { AuditTrail } from '@/components/audit-trail'
 
+export const dynamic = 'force-dynamic'
+
 interface DealDetailProps {
   params: {
     id: string

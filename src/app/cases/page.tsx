@@ -22,6 +22,8 @@ import { prisma } from '@/lib/prisma'
 import { RoleGuard } from '@/components/rbac/RoleGuard'
 import { PERMISSIONS } from '@/lib/rbac'
 
+export const dynamic = 'force-dynamic'
+
 async function getCases() {
   const cases = await prisma.case.findMany({
     include: {
