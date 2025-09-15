@@ -25,6 +25,11 @@ import { PERMISSIONS } from '@/lib/rbac'
 export const dynamic = 'force-dynamic'
 
 async function getCases() {
+  // Return empty array in production on Vercel
+  if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+    return []
+  }
+  
   const cases = await prisma.case.findMany({
     include: {
       entity: true,

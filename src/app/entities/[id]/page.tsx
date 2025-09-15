@@ -37,6 +37,11 @@ interface EntityDetailProps {
 }
 
 async function getEntity(id: string) {
+  // Return null in production on Vercel
+  if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+    return null
+  }
+  
   const entity = await prisma.entity.findUnique({
     where: { id },
     include: {

@@ -20,6 +20,11 @@ import { prisma } from '@/lib/prisma'
 export const dynamic = 'force-dynamic'
 
 async function getDeals() {
+  // Return empty array in production on Vercel
+  if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+    return []
+  }
+  
   const deals = await prisma.deal.findMany({
     include: {
       createdBy: true,

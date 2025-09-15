@@ -37,6 +37,11 @@ interface CaseDetailProps {
 }
 
 async function getCase(id: string) {
+  // Return null in production on Vercel
+  if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+    return null
+  }
+  
   const case_ = await prisma.case.findUnique({
     where: { id },
     include: {
