@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -57,9 +57,58 @@ function getRiskColor(risk: string) {
   }
 }
 
+async function getEntities(): Promise<Entity[]> {
+  try {
+    const response = await fetch('/api/entities')
+    if (!response.ok) {
+      throw new Error('Failed to fetch entities')
+    }
+    return response.json()
+  } catch (error) {
+    console.error('Error fetching entities:', error)
+    return []
+  }
+}
 
-async function EntityList() {
-  const entities = await getEntities()
+function EntityList() {
+  const [entities, setEntities] = useState<Entity[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchEntities() {
+      const data = await getEntities()
+      setEntities(data)
+      setLoading(false)
+    }
+    fetchEntities()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(3)].map((_, i) => (
+          <Card key={i} className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-4">
+                  <div className="w-10 h-10 bg-gray-200 rounded-lg" />
+                  <div className="space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-48" />
+                    <div className="h-3 bg-gray-200 rounded w-32" />
+                    <div className="flex space-x-2">
+                      <div className="h-6 bg-gray-200 rounded w-16" />
+                      <div className="h-6 bg-gray-200 rounded w-16" />
+                    </div>
+                  </div>
+                </div>
+                <div className="w-24 h-8 bg-gray-200 rounded" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div className="grid gap-4">
@@ -215,32 +264,7 @@ export default function EntitiesPage() {
         </Select>
       </div>
 
-      <Suspense fallback={
-        <div className="space-y-4">
-          {[...Array(3)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-10 h-10 bg-gray-200 rounded-lg" />
-                    <div className="space-y-2">
-                      <div className="h-4 bg-gray-200 rounded w-48" />
-                      <div className="h-3 bg-gray-200 rounded w-32" />
-                      <div className="flex space-x-2">
-                        <div className="h-6 bg-gray-200 rounded w-16" />
-                        <div className="h-6 bg-gray-200 rounded w-16" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-24 h-8 bg-gray-200 rounded" />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      }>
-        <EntityList />
-      </Suspense>
+      <EntityList />
         </div>
       </div>
     </>
