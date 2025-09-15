@@ -77,7 +77,26 @@ function EntityList() {
   useEffect(() => {
     async function fetchEntities() {
       const data = await getEntities()
-      setEntities(data)
+      
+      // If no entities exist, initialize demo data
+      if (data.length === 0) {
+        try {
+          const initResponse = await fetch('/api/init-demo-data')
+          if (initResponse.ok) {
+            // Fetch entities again after initialization
+            const newData = await getEntities()
+            setEntities(newData)
+          } else {
+            setEntities(data)
+          }
+        } catch (error) {
+          console.error('Failed to initialize demo data:', error)
+          setEntities(data)
+        }
+      } else {
+        setEntities(data)
+      }
+      
       setLoading(false)
     }
     fetchEntities()
