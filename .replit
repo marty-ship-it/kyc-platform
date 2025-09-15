@@ -1,0 +1,15 @@
+run = "npm run dev"
+entrypoint = "src/app/page.tsx"
+modules = ["nodejs-20"]
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "npm start"]
+deploymentTarget = "static"
+ignorePorts = false
+
+[[ports]]
+localPort = 3000
+externalPort = 80
