@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 4287",
     "build": "prisma generate && next build --turbopack",
-    "build:render": "cp prisma/schema-render.prisma prisma/schema.prisma && prisma generate && prisma db push && npm run db:seed:render && next build",
+    "build:render": "cp prisma/schema-render.prisma prisma/schema.prisma && npx prisma generate && npx prisma db push && npx tsx prisma/seed.ts && next build",
     "start": "next start -p 3001",
     "start:render": "next start",
     "lint": "eslint",

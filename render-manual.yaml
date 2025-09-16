@@ -1,0 +1,18 @@
+# Alternative manual deployment approach
+# If blueprint fails, create these services manually
+
+# 1. First create PostgreSQL database:
+# - Name: kyc-platform-db
+# - Database: kyc_platform  
+# - User: kyc_user
+
+# 2. Then create web service with these settings:
+# - Name: kyc-platform
+# - Environment: Node
+# - Build Command: npm install && cp prisma/schema-render.prisma prisma/schema.prisma && npx prisma generate && next build
+# - Start Command: npm start
+# - Environment Variables:
+#   - NODE_ENV=production
+#   - NEXTAUTH_SECRET=[generate random]
+#   - NEXTAUTH_URL=https://kyc-platform.onrender.com
+#   - DATABASE_URL=[from database connection string]

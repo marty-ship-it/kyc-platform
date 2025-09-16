@@ -2,6 +2,7 @@ services:
   - type: web
     name: kyc-platform
     env: node
+    plan: starter
     buildCommand: npm install && npm run build:render
     startCommand: npm run start:render
     envVars:
