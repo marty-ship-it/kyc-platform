@@ -1,15 +1,22 @@
 services:
   - type: web
     name: kyc-platform
-    runtime: node
-    buildCommand: npm install && npx prisma generate && npm run build
-    startCommand: npm start
+    env: node
+    buildCommand: npm install && npm run build:render
+    startCommand: npm run start:render
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NEXTAUTH_SECRET
+        generateValue: true
       - key: NEXTAUTH_URL
         value: https://kyc-platform.onrender.com
-      - key: NEXTAUTH_SECRET
-        value: demo-secret-key-for-kycira-platform
       - key: DATABASE_URL
-        value: file:./prisma/dev.db
+        fromDatabase:
+          name: kyc-platform-db
+          property: connectionString
+
+databases:
+  - name: kyc-platform-db
+    databaseName: kyc_platform
+    user: kyc_user
