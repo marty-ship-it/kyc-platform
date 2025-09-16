@@ -15,7 +15,7 @@
     "db:seed:render": "tsx prisma/seed.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate || echo 'Skipping prisma generate in build'"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
