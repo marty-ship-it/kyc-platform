@@ -2,8 +2,8 @@ services:
   - type: web
     name: kyc-platform
     env: node
-    buildCommand: npm ci && cp prisma/schema-render.prisma prisma/schema.prisma && npx prisma generate && npm run build
-    startCommand: npm start
+    buildCommand: "npm install && npm run build:prod"
+    startCommand: "npm start"
     envVars:
       - key: NODE_ENV
         value: production

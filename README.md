@@ -1,5 +1,7 @@
 # Kycira AML/CTF Compliance Platform
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/marty-ship-it/kyc-platform)
+
 A comprehensive entity-centric AML/CTF compliance platform showcasing modern KYC management, automated screening, and case management for Australian real estate agencies.
 
 ## 🏗️ Tech Stack
