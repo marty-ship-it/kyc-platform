@@ -1,0 +1,194 @@
+
+> kyc-platform@0.1.0 dev
+> next dev -p 4287
+
+   ▲ Next.js 15.5.2
+   - Local:        http://localhost:4287
+   - Network:      http://10.10.64.71:4287
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1474ms
+ ○ Compiling / ...
+ ✓ Compiled / in 817ms (650 modules)
+ GET / 307 in 1023ms
+ ✓ Compiled in 35ms (262 modules)
+ ○ Compiling /login ...
+ ✓ Compiled /login in 805ms (1493 modules)
+ GET /login 200 in 995ms
+ GET / 307 in 58ms
+ GET /login 200 in 40ms
+ ✓ Compiled /api/auth/[...nextauth] in 242ms (1727 modules)
+ ✓ Compiled /_error in 308ms (2067 modules)
+ GET /api/auth/session 200 in 802ms
+ GET /login 200 in 375ms
+ GET /api/auth/session 200 in 79ms
+ GET /login 200 in 16ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 715ms
+ GET /api/auth/providers 200 in 12ms
+ GET /api/auth/csrf 200 in 8ms
+ POST /api/auth/callback/credentials 200 in 9ms
+ GET /api/auth/session 200 in 8ms
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 568ms (2183 modules)
+ GET /dashboard 200 in 656ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 247ms
+ ○ Compiling /entities ...
+ ✓ Compiled /entities in 568ms (2345 modules)
+ GET /entities 200 in 629ms
+ ✓ Compiled /api/entities in 393ms (2362 modules)
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt`, COALESCE(`aggr_selection_0_Case`.`_aggr_count_cases`, 0) AS `_aggr_count_cases`, COALESCE(`aggr_selection_1_Deal`.`_aggr_count_deals`, 0) AS `_aggr_count_deals` FROM `main`.`entities` LEFT JOIN (SELECT `main`.`cases`.`entityId`, COUNT(*) AS `_aggr_count_cases` FROM `main`.`cases` WHERE 1=1 GROUP BY `main`.`cases`.`entityId`) AS `aggr_selection_0_Case` ON (`main`.`entities`.`id` = `aggr_selection_0_Case`.`entityId`) LEFT JOIN (SELECT `main`.`_EntityDeals`.`B`, COUNT(`main`.`_EntityDeals`.`B`) AS `_aggr_count_deals` FROM `main`.`deals` LEFT JOIN `main`.`_EntityDeals` ON (`main`.`deals`.`id` = `main`.`_EntityDeals`.`A`) WHERE 1=1 GROUP BY `main`.`_EntityDeals`.`B`) AS `aggr_selection_1_Deal` ON (`main`.`entities`.`id` = `aggr_selection_1_Deal`.`B`) WHERE 1=1 ORDER BY `main`.`entities`.`updatedAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, `main`.`organisations`.`abn`, `main`.`organisations`.`timezone` FROM `main`.`organisations` WHERE `main`.`organisations`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`kyc_checks`.`id`, `main`.`kyc_checks`.`partyId`, `main`.`kyc_checks`.`dvStatus`, `main`.`kyc_checks`.`liveness`, `main`.`kyc_checks`.`proofOfAddressUrl`, `main`.`kyc_checks`.`resultJson`, `main`.`kyc_checks`.`createdAt`, `main`.`kyc_checks`.`entityId` FROM `main`.`kyc_checks` WHERE `main`.`kyc_checks`.`entityId` IN (?,?,?) ORDER BY `main`.`kyc_checks`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`screenings`.`id`, `main`.`screenings`.`partyId`, `main`.`screenings`.`pep`, `main`.`screenings`.`sanctions`, `main`.`screenings`.`adverseMedia`, `main`.`screenings`.`resultJson`, `main`.`screenings`.`createdAt`, `main`.`screenings`.`entityId` FROM `main`.`screenings` WHERE `main`.`screenings`.`entityId` IN (?,?,?) ORDER BY `main`.`screenings`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/entities 200 in 543ms
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt`, COALESCE(`aggr_selection_0_Case`.`_aggr_count_cases`, 0) AS `_aggr_count_cases`, COALESCE(`aggr_selection_1_Deal`.`_aggr_count_deals`, 0) AS `_aggr_count_deals` FROM `main`.`entities` LEFT JOIN (SELECT `main`.`cases`.`entityId`, COUNT(*) AS `_aggr_count_cases` FROM `main`.`cases` WHERE 1=1 GROUP BY `main`.`cases`.`entityId`) AS `aggr_selection_0_Case` ON (`main`.`entities`.`id` = `aggr_selection_0_Case`.`entityId`) LEFT JOIN (SELECT `main`.`_EntityDeals`.`B`, COUNT(`main`.`_EntityDeals`.`B`) AS `_aggr_count_deals` FROM `main`.`deals` LEFT JOIN `main`.`_EntityDeals` ON (`main`.`deals`.`id` = `main`.`_EntityDeals`.`A`) WHERE 1=1 GROUP BY `main`.`_EntityDeals`.`B`) AS `aggr_selection_1_Deal` ON (`main`.`entities`.`id` = `aggr_selection_1_Deal`.`B`) WHERE 1=1 ORDER BY `main`.`entities`.`updatedAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, `main`.`organisations`.`abn`, `main`.`organisations`.`timezone` FROM `main`.`organisations` WHERE `main`.`organisations`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`kyc_checks`.`id`, `main`.`kyc_checks`.`partyId`, `main`.`kyc_checks`.`dvStatus`, `main`.`kyc_checks`.`liveness`, `main`.`kyc_checks`.`proofOfAddressUrl`, `main`.`kyc_checks`.`resultJson`, `main`.`kyc_checks`.`createdAt`, `main`.`kyc_checks`.`entityId` FROM `main`.`kyc_checks` WHERE `main`.`kyc_checks`.`entityId` IN (?,?,?) ORDER BY `main`.`kyc_checks`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`screenings`.`id`, `main`.`screenings`.`partyId`, `main`.`screenings`.`pep`, `main`.`screenings`.`sanctions`, `main`.`screenings`.`adverseMedia`, `main`.`screenings`.`resultJson`, `main`.`screenings`.`createdAt`, `main`.`screenings`.`entityId` FROM `main`.`screenings` WHERE `main`.`screenings`.`entityId` IN (?,?,?) ORDER BY `main`.`screenings`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/entities 200 in 8ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 641ms
+ ○ Compiling /entities/[id] ...
+ ✓ Compiled /entities/[id] in 564ms (2436 modules)
+Error: Route "/entities/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at EntityDetailPage (src/app/entities/[id]/page.tsx:227:41)
+  225 |
+  226 | export default async function EntityDetailPage({ params }: EntityDetailProps) {
+> 227 |   const entity = await getEntity(params.id)
+      |                                         ^
+  228 |
+  229 |   if (!entity) {
+  230 |     notFound()
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE (`main`.`entities`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, `main`.`organisations`.`abn`, `main`.`organisations`.`timezone` FROM `main`.`organisations` WHERE `main`.`organisations`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`parties`.`id`, `main`.`parties`.`dealId`, `main`.`parties`.`entityId`, `main`.`parties`.`type`, `main`.`parties`.`fullName`, `main`.`parties`.`dob`, `main`.`parties`.`country`, `main`.`parties`.`docType`, `main`.`parties`.`docNumber`, `main`.`parties`.`pepFlag`, `main`.`parties`.`createdAt` FROM `main`.`parties` WHERE `main`.`parties`.`entityId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE `main`.`deals`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`kyc_checks`.`id`, `main`.`kyc_checks`.`partyId`, `main`.`kyc_checks`.`dvStatus`, `main`.`kyc_checks`.`liveness`, `main`.`kyc_checks`.`proofOfAddressUrl`, `main`.`kyc_checks`.`resultJson`, `main`.`kyc_checks`.`createdAt`, `main`.`kyc_checks`.`entityId` FROM `main`.`kyc_checks` WHERE `main`.`kyc_checks`.`partyId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`screenings`.`id`, `main`.`screenings`.`partyId`, `main`.`screenings`.`pep`, `main`.`screenings`.`sanctions`, `main`.`screenings`.`adverseMedia`, `main`.`screenings`.`resultJson`, `main`.`screenings`.`createdAt`, `main`.`screenings`.`entityId` FROM `main`.`screenings` WHERE `main`.`screenings`.`partyId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`_EntityDeals`.`B`, `main`.`_EntityDeals`.`A` FROM `main`.`_EntityDeals` WHERE `main`.`_EntityDeals`.`B` IN (?)
+prisma:query SELECT `main`.`cases`.`id`, `main`.`cases`.`orgId`, `main`.`cases`.`entityId`, `main`.`cases`.`dealId`, `main`.`cases`.`reason`, `main`.`cases`.`status`, `main`.`cases`.`notes`, `main`.`cases`.`createdById`, `main`.`cases`.`createdAt`, `main`.`cases`.`updatedAt` FROM `main`.`cases` WHERE `main`.`cases`.`entityId` IN (?) ORDER BY `main`.`cases`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE `main`.`deals`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`users`.`id`, `main`.`users`.`name`, `main`.`users`.`email`, `main`.`users`.`role`, `main`.`users`.`passwordHash`, `main`.`users`.`createdAt`, `main`.`users`.`updatedAt` FROM `main`.`users` WHERE `main`.`users`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`reports`.`id`, `main`.`reports`.`dealId`, `main`.`reports`.`caseId`, `main`.`reports`.`kind`, `main`.`reports`.`status`, `main`.`reports`.`pdfUrl`, `main`.`reports`.`jsonUrl`, `main`.`reports`.`submittedAt`, `main`.`reports`.`createdAt` FROM `main`.`reports` WHERE `main`.`reports`.`caseId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`kyc_checks`.`id`, `main`.`kyc_checks`.`partyId`, `main`.`kyc_checks`.`dvStatus`, `main`.`kyc_checks`.`liveness`, `main`.`kyc_checks`.`proofOfAddressUrl`, `main`.`kyc_checks`.`resultJson`, `main`.`kyc_checks`.`createdAt`, `main`.`kyc_checks`.`entityId` FROM `main`.`kyc_checks` WHERE `main`.`kyc_checks`.`entityId` IN (?) ORDER BY `main`.`kyc_checks`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`screenings`.`id`, `main`.`screenings`.`partyId`, `main`.`screenings`.`pep`, `main`.`screenings`.`sanctions`, `main`.`screenings`.`adverseMedia`, `main`.`screenings`.`resultJson`, `main`.`screenings`.`createdAt`, `main`.`screenings`.`entityId` FROM `main`.`screenings` WHERE `main`.`screenings`.`entityId` IN (?) ORDER BY `main`.`screenings`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`transactions`.`id`, `main`.`transactions`.`dealId`, `main`.`transactions`.`type`, `main`.`transactions`.`subtype`, `main`.`transactions`.`amount`, `main`.`transactions`.`currency`, `main`.`transactions`.`direction`, `main`.`transactions`.`counterparty`, `main`.`transactions`.`method`, `main`.`transactions`.`purpose`, `main`.`transactions`.`isCrossBorder`, `main`.`transactions`.`isStructured`, `main`.`transactions`.`isInternal`, `main`.`transactions`.`flagged`, `main`.`transactions`.`receivedAt`, `main`.`transactions`.`createdAt` FROM `main`.`transactions` LEFT JOIN `main`.`deals` AS `j0` ON (`j0`.`id`) = (`main`.`transactions`.`dealId`) WHERE (EXISTS(SELECT `t1`.`dealId` FROM `main`.`parties` AS `t1` WHERE (`t1`.`entityId` = ? AND (`j0`.`id`) = (`t1`.`dealId`) AND `t1`.`dealId` IS NOT NULL)) AND (`j0`.`id` IS NOT NULL)) ORDER BY `main`.`transactions`.`receivedAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE `main`.`deals`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`audit_events`.`id`, `main`.`audit_events`.`orgId`, `main`.`audit_events`.`userId`, `main`.`audit_events`.`entityType`, `main`.`audit_events`.`entityId`, `main`.`audit_events`.`caseId`, `main`.`audit_events`.`action`, `main`.`audit_events`.`payloadJson`, `main`.`audit_events`.`createdAt` FROM `main`.`audit_events` WHERE (`main`.`audit_events`.`entityId` = ? OR (`main`.`audit_events`.`entityType` = ? AND `main`.`audit_events`.`entityId` = ?) OR (`main`.`audit_events`.`entityType` = ? AND `main`.`audit_events`.`caseId` IN (?))) ORDER BY `main`.`audit_events`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, `main`.`organisations`.`abn`, `main`.`organisations`.`timezone` FROM `main`.`organisations` WHERE `main`.`organisations`.`id` IN (?) LIMIT ? OFFSET ?
+ GET /entities/cmfkxy1zn0005y43lg058j46y 200 in 1016ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 243ms
+ ✓ Compiled /api/entities/[id]/screen in 300ms (2439 modules)
+Error: Route "/api/entities/[id]/screen" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at POST (src/app/api/entities/[id]/screen/route.ts:12:60)
+  10 |   try {
+  11 |     // For development/demo - skip auth check
+> 12 |     console.log('Screening API called for entity:', params.id)
+     |                                                            ^
+  13 |
+  14 |     const entityId = params.id
+  15 |
+Screening API called for entity: cmfkxy1zn0005y43lg058j46y
+Error: Route "/api/entities/[id]/screen" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at POST (src/app/api/entities/[id]/screen/route.ts:14:29)
+  12 |     console.log('Screening API called for entity:', params.id)
+  13 |
+> 14 |     const entityId = params.id
+     |                             ^
+  15 |
+  16 |     // Trigger manual screening
+  17 |     const result = await triggerManualScreening(entityId)
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE (`main`.`entities`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`parties`.`id`, `main`.`parties`.`dealId`, `main`.`parties`.`entityId`, `main`.`parties`.`type`, `main`.`parties`.`fullName`, `main`.`parties`.`dob`, `main`.`parties`.`country`, `main`.`parties`.`docType`, `main`.`parties`.`docNumber`, `main`.`parties`.`pepFlag`, `main`.`parties`.`createdAt` FROM `main`.`parties` WHERE `main`.`parties`.`entityId` = ? LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`screenings`.`id`, `main`.`screenings`.`partyId`, `main`.`screenings`.`pep`, `main`.`screenings`.`sanctions`, `main`.`screenings`.`adverseMedia`, `main`.`screenings`.`resultJson`, `main`.`screenings`.`createdAt`, `main`.`screenings`.`entityId` FROM `main`.`screenings` WHERE `main`.`screenings`.`partyId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE (`main`.`entities`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query INSERT INTO `main`.`audit_events` (`id`, `orgId`, `entityType`, `entityId`, `action`, `payloadJson`, `createdAt`) VALUES (?,?,?,?,?,?,?) RETURNING `id` AS `id`, `orgId` AS `orgId`, `userId` AS `userId`, `entityType` AS `entityType`, `entityId` AS `entityId`, `caseId` AS `caseId`, `action` AS `action`, `payloadJson` AS `payloadJson`, `createdAt` AS `createdAt`
+ POST /api/entities/cmfkxy1zn0005y43lg058j46y/screen 200 in 1294ms
+ ○ Compiling /cases ...
+ ✓ Compiled /cases in 738ms (2465 modules)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`cases`.`id`, `main`.`cases`.`orgId`, `main`.`cases`.`entityId`, `main`.`cases`.`dealId`, `main`.`cases`.`reason`, `main`.`cases`.`status`, `main`.`cases`.`notes`, `main`.`cases`.`createdById`, `main`.`cases`.`createdAt`, `main`.`cases`.`updatedAt`, COALESCE(`aggr_selection_0_Report`.`_aggr_count_reports`, 0) AS `_aggr_count_reports` FROM `main`.`cases` LEFT JOIN (SELECT `main`.`reports`.`caseId`, COUNT(*) AS `_aggr_count_reports` FROM `main`.`reports` WHERE 1=1 GROUP BY `main`.`reports`.`caseId`) AS `aggr_selection_0_Report` ON (`main`.`cases`.`id` = `aggr_selection_0_Report`.`caseId`) WHERE 1=1 ORDER BY `main`.`cases`.`status` ASC, `main`.`cases`.`updatedAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE `main`.`entities`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE `main`.`deals`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`users`.`id`, `main`.`users`.`name`, `main`.`users`.`email`, `main`.`users`.`role`, `main`.`users`.`passwordHash`, `main`.`users`.`createdAt`, `main`.`users`.`updatedAt` FROM `main`.`users` WHERE `main`.`users`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`reports`.`id`, `main`.`reports`.`dealId`, `main`.`reports`.`caseId`, `main`.`reports`.`kind`, `main`.`reports`.`status`, `main`.`reports`.`pdfUrl`, `main`.`reports`.`jsonUrl`, `main`.`reports`.`submittedAt`, `main`.`reports`.`createdAt` FROM `main`.`reports` WHERE `main`.`reports`.`caseId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, `main`.`organisations`.`abn`, `main`.`organisations`.`timezone` FROM `main`.`organisations` WHERE `main`.`organisations`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`cases`.`id`, `main`.`cases`.`orgId`, `main`.`cases`.`entityId`, `main`.`cases`.`dealId`, `main`.`cases`.`reason`, `main`.`cases`.`status`, `main`.`cases`.`notes`, `main`.`cases`.`createdById`, `main`.`cases`.`createdAt`, `main`.`cases`.`updatedAt`, COALESCE(`aggr_selection_0_Report`.`_aggr_count_reports`, 0) AS `_aggr_count_reports` FROM `main`.`cases` LEFT JOIN (SELECT `main`.`reports`.`caseId`, COUNT(*) AS `_aggr_count_reports` FROM `main`.`reports` WHERE 1=1 GROUP BY `main`.`reports`.`caseId`) AS `aggr_selection_0_Report` ON (`main`.`cases`.`id` = `aggr_selection_0_Report`.`caseId`) WHERE 1=1 ORDER BY `main`.`cases`.`status` ASC, `main`.`cases`.`updatedAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE `main`.`entities`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE `main`.`deals`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`users`.`id`, `main`.`users`.`name`, `main`.`users`.`email`, `main`.`users`.`role`, `main`.`users`.`passwordHash`, `main`.`users`.`createdAt`, `main`.`users`.`updatedAt` FROM `main`.`users` WHERE `main`.`users`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`reports`.`id`, `main`.`reports`.`dealId`, `main`.`reports`.`caseId`, `main`.`reports`.`kind`, `main`.`reports`.`status`, `main`.`reports`.`pdfUrl`, `main`.`reports`.`jsonUrl`, `main`.`reports`.`submittedAt`, `main`.`reports`.`createdAt` FROM `main`.`reports` WHERE `main`.`reports`.`caseId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, `main`.`organisations`.`abn`, `main`.`organisations`.`timezone` FROM `main`.`organisations` WHERE `main`.`organisations`.`id` IN (?) LIMIT ? OFFSET ?
+ GET /cases 200 in 866ms
+ GET /cases 200 in 32ms
+ ✓ Compiled /deals in 284ms (2457 modules)
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE 1=1 ORDER BY `main`.`deals`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`users`.`id`, `main`.`users`.`name`, `main`.`users`.`email`, `main`.`users`.`role`, `main`.`users`.`passwordHash`, `main`.`users`.`createdAt`, `main`.`users`.`updatedAt` FROM `main`.`users` WHERE `main`.`users`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`parties`.`id`, `main`.`parties`.`dealId`, `main`.`parties`.`entityId`, `main`.`parties`.`type`, `main`.`parties`.`fullName`, `main`.`parties`.`dob`, `main`.`parties`.`country`, `main`.`parties`.`docType`, `main`.`parties`.`docNumber`, `main`.`parties`.`pepFlag`, `main`.`parties`.`createdAt` FROM `main`.`parties` WHERE `main`.`parties`.`dealId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE `main`.`entities`.`id` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`kyc_checks`.`id`, `main`.`kyc_checks`.`partyId`, `main`.`kyc_checks`.`dvStatus`, `main`.`kyc_checks`.`liveness`, `main`.`kyc_checks`.`proofOfAddressUrl`, `main`.`kyc_checks`.`resultJson`, `main`.`kyc_checks`.`createdAt`, `main`.`kyc_checks`.`entityId` FROM `main`.`kyc_checks` WHERE `main`.`kyc_checks`.`partyId` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`screenings`.`id`, `main`.`screenings`.`partyId`, `main`.`screenings`.`pep`, `main`.`screenings`.`sanctions`, `main`.`screenings`.`adverseMedia`, `main`.`screenings`.`resultJson`, `main`.`screenings`.`createdAt`, `main`.`screenings`.`entityId` FROM `main`.`screenings` WHERE `main`.`screenings`.`partyId` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`risk_assessments`.`id`, `main`.`risk_assessments`.`dealId`, `main`.`risk_assessments`.`score`, `main`.`risk_assessments`.`answersJson`, `main`.`risk_assessments`.`rationale`, `main`.`risk_assessments`.`createdAt` FROM `main`.`risk_assessments` WHERE `main`.`risk_assessments`.`dealId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`transactions`.`id`, `main`.`transactions`.`dealId`, `main`.`transactions`.`type`, `main`.`transactions`.`subtype`, `main`.`transactions`.`amount`, `main`.`transactions`.`currency`, `main`.`transactions`.`direction`, `main`.`transactions`.`counterparty`, `main`.`transactions`.`method`, `main`.`transactions`.`purpose`, `main`.`transactions`.`isCrossBorder`, `main`.`transactions`.`isStructured`, `main`.`transactions`.`isInternal`, `main`.`transactions`.`flagged`, `main`.`transactions`.`receivedAt`, `main`.`transactions`.`createdAt` FROM `main`.`transactions` WHERE `main`.`transactions`.`dealId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`reports`.`id`, `main`.`reports`.`dealId`, `main`.`reports`.`caseId`, `main`.`reports`.`kind`, `main`.`reports`.`status`, `main`.`reports`.`pdfUrl`, `main`.`reports`.`jsonUrl`, `main`.`reports`.`submittedAt`, `main`.`reports`.`createdAt` FROM `main`.`reports` WHERE `main`.`reports`.`dealId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`cases`.`id`, `main`.`cases`.`orgId`, `main`.`cases`.`entityId`, `main`.`cases`.`dealId`, `main`.`cases`.`reason`, `main`.`cases`.`status`, `main`.`cases`.`notes`, `main`.`cases`.`createdById`, `main`.`cases`.`createdAt`, `main`.`cases`.`updatedAt` FROM `main`.`cases` WHERE `main`.`cases`.`dealId` IN (?) LIMIT ? OFFSET ?
+ GET /deals 200 in 368ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 247ms
+ ○ Compiling /deals/[id] ...
+ ✓ Compiled /deals/[id] in 703ms (2476 modules)
+Error: Route "/deals/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at DealDetailPage (src/app/deals/[id]/page.tsx:172:37)
+  170 |
+  171 | export default async function DealDetailPage({ params }: DealDetailProps) {
+> 172 |   const deal = await getDeal(params.id)
+      |                                     ^
+  173 |
+  174 |   if (!deal) {
+  175 |     notFound()
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE (`main`.`deals`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`users`.`id`, `main`.`users`.`name`, `main`.`users`.`email`, `main`.`users`.`role`, `main`.`users`.`passwordHash`, `main`.`users`.`createdAt`, `main`.`users`.`updatedAt` FROM `main`.`users` WHERE `main`.`users`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, `main`.`organisations`.`abn`, `main`.`organisations`.`timezone` FROM `main`.`organisations` WHERE `main`.`organisations`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`parties`.`id`, `main`.`parties`.`dealId`, `main`.`parties`.`entityId`, `main`.`parties`.`type`, `main`.`parties`.`fullName`, `main`.`parties`.`dob`, `main`.`parties`.`country`, `main`.`parties`.`docType`, `main`.`parties`.`docNumber`, `main`.`parties`.`pepFlag`, `main`.`parties`.`createdAt` FROM `main`.`parties` WHERE `main`.`parties`.`dealId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE `main`.`entities`.`id` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`kyc_checks`.`id`, `main`.`kyc_checks`.`partyId`, `main`.`kyc_checks`.`dvStatus`, `main`.`kyc_checks`.`liveness`, `main`.`kyc_checks`.`proofOfAddressUrl`, `main`.`kyc_checks`.`resultJson`, `main`.`kyc_checks`.`createdAt`, `main`.`kyc_checks`.`entityId` FROM `main`.`kyc_checks` WHERE `main`.`kyc_checks`.`partyId` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`screenings`.`id`, `main`.`screenings`.`partyId`, `main`.`screenings`.`pep`, `main`.`screenings`.`sanctions`, `main`.`screenings`.`adverseMedia`, `main`.`screenings`.`resultJson`, `main`.`screenings`.`createdAt`, `main`.`screenings`.`entityId` FROM `main`.`screenings` WHERE `main`.`screenings`.`partyId` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`risk_assessments`.`id`, `main`.`risk_assessments`.`dealId`, `main`.`risk_assessments`.`score`, `main`.`risk_assessments`.`answersJson`, `main`.`risk_assessments`.`rationale`, `main`.`risk_assessments`.`createdAt` FROM `main`.`risk_assessments` WHERE `main`.`risk_assessments`.`dealId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`transactions`.`id`, `main`.`transactions`.`dealId`, `main`.`transactions`.`type`, `main`.`transactions`.`subtype`, `main`.`transactions`.`amount`, `main`.`transactions`.`currency`, `main`.`transactions`.`direction`, `main`.`transactions`.`counterparty`, `main`.`transactions`.`method`, `main`.`transactions`.`purpose`, `main`.`transactions`.`isCrossBorder`, `main`.`transactions`.`isStructured`, `main`.`transactions`.`isInternal`, `main`.`transactions`.`flagged`, `main`.`transactions`.`receivedAt`, `main`.`transactions`.`createdAt` FROM `main`.`transactions` WHERE `main`.`transactions`.`dealId` IN (?) ORDER BY `main`.`transactions`.`receivedAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`reports`.`id`, `main`.`reports`.`dealId`, `main`.`reports`.`caseId`, `main`.`reports`.`kind`, `main`.`reports`.`status`, `main`.`reports`.`pdfUrl`, `main`.`reports`.`jsonUrl`, `main`.`reports`.`submittedAt`, `main`.`reports`.`createdAt` FROM `main`.`reports` WHERE `main`.`reports`.`dealId` IN (?) ORDER BY `main`.`reports`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`cases`.`id`, `main`.`cases`.`orgId`, `main`.`cases`.`entityId`, `main`.`cases`.`dealId`, `main`.`cases`.`reason`, `main`.`cases`.`status`, `main`.`cases`.`notes`, `main`.`cases`.`createdById`, `main`.`cases`.`createdAt`, `main`.`cases`.`updatedAt` FROM `main`.`cases` WHERE `main`.`cases`.`dealId` IN (?) ORDER BY `main`.`cases`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`users`.`id`, `main`.`users`.`name`, `main`.`users`.`email`, `main`.`users`.`role`, `main`.`users`.`passwordHash`, `main`.`users`.`createdAt`, `main`.`users`.`updatedAt` FROM `main`.`users` WHERE `main`.`users`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE (`main`.`deals`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`parties`.`id`, `main`.`parties`.`dealId`, `main`.`parties`.`entityId`, `main`.`parties`.`type`, `main`.`parties`.`fullName`, `main`.`parties`.`dob`, `main`.`parties`.`country`, `main`.`parties`.`docType`, `main`.`parties`.`docNumber`, `main`.`parties`.`pepFlag`, `main`.`parties`.`createdAt` FROM `main`.`parties` WHERE (`main`.`parties`.`entityId` IS NOT NULL AND `main`.`parties`.`dealId` IN (?)) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE `main`.`entities`.`id` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE (`main`.`entities`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`parties`.`id`, `main`.`parties`.`dealId`, `main`.`parties`.`entityId`, `main`.`parties`.`type`, `main`.`parties`.`fullName`, `main`.`parties`.`dob`, `main`.`parties`.`country`, `main`.`parties`.`docType`, `main`.`parties`.`docNumber`, `main`.`parties`.`pepFlag`, `main`.`parties`.`createdAt` FROM `main`.`parties` WHERE `main`.`parties`.`entityId` IN (?) ORDER BY `main`.`parties`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`kyc_checks`.`id`, `main`.`kyc_checks`.`partyId`, `main`.`kyc_checks`.`dvStatus`, `main`.`kyc_checks`.`liveness`, `main`.`kyc_checks`.`proofOfAddressUrl`, `main`.`kyc_checks`.`resultJson`, `main`.`kyc_checks`.`createdAt`, `main`.`kyc_checks`.`entityId` FROM `main`.`kyc_checks` WHERE `main`.`kyc_checks`.`partyId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE `main`.`deals`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`entities`.`id`, `main`.`entities`.`orgId`, `main`.`entities`.`kind`, `main`.`entities`.`fullName`, `main`.`entities`.`legalName`, `main`.`entities`.`dob`, `main`.`entities`.`country`, `main`.`entities`.`abnAcn`, `main`.`entities`.`riskScore`, `main`.`entities`.`riskRationale`, `main`.`entities`.`lastKycId`, `main`.`entities`.`lastScreeningId`, `main`.`entities`.`createdAt`, `main`.`entities`.`updatedAt` FROM `main`.`entities` WHERE (`main`.`entities`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`parties`.`id`, `main`.`parties`.`dealId`, `main`.`parties`.`entityId`, `main`.`parties`.`type`, `main`.`parties`.`fullName`, `main`.`parties`.`dob`, `main`.`parties`.`country`, `main`.`parties`.`docType`, `main`.`parties`.`docNumber`, `main`.`parties`.`pepFlag`, `main`.`parties`.`createdAt` FROM `main`.`parties` WHERE `main`.`parties`.`entityId` IN (?) ORDER BY `main`.`parties`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`kyc_checks`.`id`, `main`.`kyc_checks`.`partyId`, `main`.`kyc_checks`.`dvStatus`, `main`.`kyc_checks`.`liveness`, `main`.`kyc_checks`.`proofOfAddressUrl`, `main`.`kyc_checks`.`resultJson`, `main`.`kyc_checks`.`createdAt`, `main`.`kyc_checks`.`entityId` FROM `main`.`kyc_checks` WHERE `main`.`kyc_checks`.`partyId` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`deals`.`id`, `main`.`deals`.`address`, `main`.`deals`.`price`, `main`.`deals`.`status`, `main`.`deals`.`createdAt`, `main`.`deals`.`updatedAt`, `main`.`deals`.`createdByUserId`, `main`.`deals`.`orgId` FROM `main`.`deals` WHERE `main`.`deals`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`audit_events`.`id`, `main`.`audit_events`.`orgId`, `main`.`audit_events`.`userId`, `main`.`audit_events`.`entityType`, `main`.`audit_events`.`entityId`, `main`.`audit_events`.`caseId`, `main`.`audit_events`.`action`, `main`.`audit_events`.`payloadJson`, `main`.`audit_events`.`createdAt` FROM `main`.`audit_events` WHERE ((`main`.`audit_events`.`entityType` = ? AND `main`.`audit_events`.`entityId` = ?) OR (`main`.`audit_events`.`entityType` = ? AND `main`.`audit_events`.`caseId` IN (?)) OR (`main`.`audit_events`.`entityType` = ? AND `main`.`audit_events`.`entityId` IN (?,?))) ORDER BY `main`.`audit_events`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`users`.`id`, `main`.`users`.`name`, `main`.`users`.`email`, `main`.`users`.`role`, `main`.`users`.`passwordHash`, `main`.`users`.`createdAt`, `main`.`users`.`updatedAt` FROM `main`.`users` WHERE `main`.`users`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, `main`.`organisations`.`abn`, `main`.`organisations`.`timezone` FROM `main`.`organisations` WHERE `main`.`organisations`.`id` IN (?) LIMIT ? OFFSET ?
+ GET /deals/cmfkxy1zp000by43lygyvi1to 200 in 1097ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 258ms
+ ○ Compiling /training ...
+ ✓ Compiled /training in 533ms (2493 modules)
+ GET /training 200 in 573ms
+ ⨯ A conflicting public file and page file was found for path /favicon.ico https://nextjs.org/docs/messages/conflicting-public-file-page
+ GET /favicon.ico 500 in 221ms
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.2
+   - Local:        http://localhost:4287
+   - Network:      http://10.10.64.71:4287
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1553ms

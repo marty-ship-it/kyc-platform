@@ -1,0 +1,30 @@
+name: kyc-platform
+region: syd
+services:
+- name: web
+  github:
+    repo: marty-ship-it/kyc-platform
+    branch: main
+    deploy_on_push: true
+  build_command: npm install && npm run build:prod
+  run_command: npm start
+  environment_slug: node-js
+  instance_size_slug: professional-xs
+  instance_count: 1
+  http_port: 3000
+  envs:
+  - key: NODE_ENV
+    value: "production"
+  - key: NEXTAUTH_SECRET
+    type: SECRET
+  - key: NEXTAUTH_URL
+    value: "${APP_URL}"
+  - key: DATABASE_URL
+    scope: RUN_TIME
+    value: "${db.DATABASE_URL}"
+databases:
+- name: db
+  engine: PG
+  version: "15"
+  size: professional-xs
+  num_nodes: 1
