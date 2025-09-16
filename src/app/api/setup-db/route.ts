@@ -3,9 +3,9 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcrypt'
 
 export async function GET(request: Request) {
-  // Only allow in production Railway environment
-  if (process.env.RAILWAY_ENVIRONMENT !== 'production') {
-    return NextResponse.json({ error: 'Setup only available on Railway' }, { status: 403 })
+  // Allow in production environment
+  if (process.env.NODE_ENV !== 'production') {
+    return NextResponse.json({ error: 'Setup only available in production' }, { status: 403 })
   }
 
   try {
