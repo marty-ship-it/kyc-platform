@@ -1,30 +1,27 @@
-# Production Dockerfile for KYC Platform
+# Railway-specific Dockerfile
 FROM node:20-alpine AS base
 
-# Install dependencies only when needed
+# Install dependencies
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package files and Prisma schema
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
-
-# Install dependencies
 RUN npm ci
 
-# Rebuild the source code only when needed
+# Build the application
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Copy PostgreSQL schema for production
-COPY prisma/schema-render.prisma prisma/schema.prisma
+# Copy PostgreSQL schema
+RUN cp prisma/schema-render.prisma prisma/schema.prisma
 
-# Build the application
+# Build Next.js
 ENV NEXT_TELEMETRY_DISABLED 1
-RUN npm run build
+RUN npx prisma generate && npm run build
 
 # Production image
 FROM base AS runner
@@ -36,20 +33,17 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy necessary files
+# Copy everything needed
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
-
-# Copy built application
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules ./node_modules
 
 USER nextjs
 
 EXPOSE 3000
-
 ENV PORT 3000
 
 CMD ["npm", "start"]
