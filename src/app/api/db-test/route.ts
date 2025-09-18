@@ -4,6 +4,10 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   try {
     console.log('Testing database connection...')
+    console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL)
+    console.log('DATABASE_URL length:', process.env.DATABASE_URL?.length || 0)
+    
+    // Force rebuild - timestamp: ${Date.now()}
     
     // Test basic connection
     await prisma.$queryRaw`SELECT 1 as test`
@@ -34,6 +38,7 @@ export async function GET() {
       error: error instanceof Error ? error.message : 'Unknown error',
       type: error?.constructor?.name,
       database_url_exists: !!process.env.DATABASE_URL,
+      database_url_length: process.env.DATABASE_URL?.length || 0,
       node_env: process.env.NODE_ENV
     })
   }
