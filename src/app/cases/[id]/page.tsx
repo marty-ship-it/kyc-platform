@@ -23,7 +23,11 @@ import {
   Download,
   Eye,
   Edit,
-  X
+  X,
+  Shield,
+  Timer,
+  Signal,
+  TrendingUp
 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { mockCases } from '@/lib/mock-data'
@@ -143,7 +147,8 @@ function getReasonIcon(reason: string) {
 }
 
 export default async function CaseDetailPage({ params }: CaseDetailProps) {
-  const case_ = await getCase(params.id)
+  const { id } = await params
+  const case_ = await getCase(id)
 
   if (!case_) {
     notFound()
@@ -200,6 +205,19 @@ export default async function CaseDetailPage({ params }: CaseDetailProps) {
                 {case_.status}
               </Badge>
             </div>
+            {/* Triggered Signals */}
+            {case_.signals && (
+              <div className="flex items-center space-x-2 mt-2">
+                <Signal className="w-4 h-4 text-gray-500" />
+                <span className="text-sm text-gray-500">Triggered by:</span>
+                {(JSON.parse(case_.signals as string) as any[]).map((signal, idx) => (
+                  <Badge key={idx} variant="secondary" className="text-xs">
+                    {signal.type}
+                    {signal.value && `: ${signal.value.toLocaleString()}`}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <div className="flex space-x-2">
@@ -234,6 +252,79 @@ export default async function CaseDetailPage({ params }: CaseDetailProps) {
         </TabsList>
 
         <TabsContent value="details" className="space-y-6">
+          {/* Quick-Glance Panel */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Risk Score</p>
+                      <p className="text-lg font-semibold">{case_.entity.riskScore}</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Eye className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Last Screening</p>
+                      <p className="text-lg font-semibold">
+                        {case_.entity.lastScreeningId ? 'Completed' : 'Never'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <Timer className="w-5 h-5 text-orange-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">SLA Countdown</p>
+                      <p className="text-lg font-semibold">
+                        {Math.max(0, 7 - Math.floor((Date.now() - case_.createdAt.getTime()) / (1000 * 60 * 60 * 24)))} days
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Case Age</p>
+                      <p className="text-lg font-semibold">
+                        {Math.floor((Date.now() - case_.createdAt.getTime()) / (1000 * 60 * 60 * 24))} days
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Case Information */}
             <Card className="lg:col-span-2">

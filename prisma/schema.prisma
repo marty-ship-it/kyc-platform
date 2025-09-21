@@ -56,12 +56,16 @@ model Entity {
   // Latest KYC/Screening snapshot
   lastKycId     String?
   lastScreeningId String?
+  // Additional metadata
+  aliases       Json?      // string array stored as JSON for SQLite compatibility
+  masterNotes   Json?      // [{id, byUserId, text, createdAt}]
   // Links
   parties       Party[]
   kycs          KycCheck[]
   screenings    Screening[]
   deals         Deal[]     @relation("EntityDeals")
   cases         Case[]
+  transactions  Transaction[]
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   @@index([orgId, fullName])
@@ -79,6 +83,7 @@ model Case {
   deal          Deal?    @relation(fields: [dealId], references: [id])
   reason        CaseReason
   status        CaseStatus @default(OPEN)
+  signals       Json?     // [{type:"OVERSEAS_ACCOUNT"},{type:"AMOUNT_THRESHOLD",value:20000}]
   notes         Json?     // array of timeline entries with {by, at, text}
   attachments   EvidenceFile[] // reuse EvidenceFile relation
   reports       Report[]
@@ -143,6 +148,12 @@ model KycCheck {
   dvStatus           DvStatus  @default(MANUAL)
   liveness           Boolean   @default(false)
   proofOfAddressUrl  String?
+  docType            String?   // PASSPORT, DRIVER_LICENCE, etc.
+  docNumber          String?
+  issuer             String?
+  expiry             DateTime?
+  verifiedElsewhere  Boolean   @default(false)
+  verificationHash   String?
   resultJson         String?
   createdAt          DateTime  @default(now())
   // add owning Entity (optional for legacy)
@@ -185,7 +196,8 @@ model RiskAssessment {
 
 model Transaction {
   id             String            @id @default(cuid())
-  dealId         String
+  dealId         String?
+  entityId       String?
   type           TransactionType   @default(DEPOSIT)
   subtype        TransactionSubtype?
   amount         Int
@@ -197,11 +209,13 @@ model Transaction {
   isCrossBorder  Boolean           @default(false)
   isStructured   Boolean           @default(false)
   isInternal     Boolean           @default(false)
+  overseasAccount Boolean          @default(false)
   flagged        Boolean           @default(false)
   receivedAt     DateTime
   createdAt      DateTime          @default(now())
 
-  deal Deal @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  deal Deal? @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  entity Entity? @relation(fields: [entityId], references: [id])
 
   @@map("transactions")
 }
@@ -401,4 +415,12 @@ enum TransactionSubtype {
   CONVEYANCING
   MARKETING
   ADVERTISING
+}
+
+model OrgSettings {
+  id             String @id @default(cuid())
+  storeDocuments Boolean @default(true)
+  kycReuseMonths Int     @default(12)
+
+  @@map("org_settings")
 }

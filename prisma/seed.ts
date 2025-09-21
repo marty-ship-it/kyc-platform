@@ -69,7 +69,16 @@ async function main() {
       dob: new Date('1985-03-15'),
       country: 'Australia',
       riskScore: 'MEDIUM',
-      riskRationale: 'Medium risk due to offshore investment fund involvement'
+      riskRationale: 'Medium risk due to offshore investment fund involvement',
+      aliases: JSON.stringify(["James Chen", "James Robert Chen Jr"]),
+      masterNotes: JSON.stringify([
+        { 
+          id: "1", 
+          byUserId: sarah.id, 
+          text: "Longstanding client with overseas connections", 
+          createdAt: new Date().toISOString() 
+        }
+      ])
     }
   })
 
@@ -118,6 +127,10 @@ async function main() {
       dealId: deal.id,
       reason: 'RISK_ESCALATION',
       status: 'UNDER_REVIEW',
+      signals: JSON.stringify([
+        { type: "OVERSEAS_ACCOUNT" },
+        { type: "AMOUNT_THRESHOLD", value: 20000 }
+      ]),
       notes: JSON.stringify([{
         by: 'Luca Romano',
         at: new Date('2024-01-16T09:30:00Z').toISOString(),
@@ -423,6 +436,149 @@ This program will be reviewed annually or when legislative changes occur.`
     ]
   })
 
+  // Create entity-linked transactions for James Chen over multiple months
+  await prisma.transaction.createMany({
+    data: [
+      {
+        entityId: buyerEntity.id,
+        type: 'DEPOSIT',
+        amount: 20000,
+        currency: 'AUD',
+        direction: 'IN',
+        counterparty: 'Offshore Fund Transfer',
+        method: 'BANK',
+        overseasAccount: true,
+        receivedAt: new Date('2024-01-15')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'RENTAL',
+        amount: 15000,
+        currency: 'AUD',
+        direction: 'IN',
+        counterparty: 'Rental Income - Unit 5/123 Main St',
+        method: 'BANK',
+        overseasAccount: false,
+        receivedAt: new Date('2024-02-10')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'INTERNAL_TRANSFER',
+        amount: 5000,
+        currency: 'AUD',
+        direction: 'OUT',
+        counterparty: 'Internal Account Transfer',
+        method: 'BANK',
+        isInternal: true,
+        receivedAt: new Date('2024-03-05')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'DEPOSIT',
+        amount: 25000,
+        currency: 'AUD',
+        direction: 'IN',
+        counterparty: 'Investment Returns',
+        method: 'BANK',
+        overseasAccount: true,
+        receivedAt: new Date('2024-04-20')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'RENTAL',
+        amount: 12000,
+        currency: 'AUD',
+        direction: 'IN',
+        counterparty: 'Rental Income - Commercial Property',
+        method: 'BANK',
+        receivedAt: new Date('2024-05-15')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'BALANCE',
+        amount: 50000,
+        currency: 'AUD',
+        direction: 'OUT',
+        counterparty: 'Property Investment',
+        method: 'BANK',
+        receivedAt: new Date('2024-06-01')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'DEPOSIT',
+        amount: 30000,
+        currency: 'AUD',
+        direction: 'IN',
+        counterparty: 'Fund Distribution',
+        method: 'BANK',
+        overseasAccount: true,
+        receivedAt: new Date('2024-07-10')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'INTERNAL_TRANSFER',
+        amount: 8000,
+        currency: 'AUD',
+        direction: 'OUT',
+        counterparty: 'Portfolio Rebalance',
+        method: 'BANK',
+        isInternal: true,
+        receivedAt: new Date('2024-08-22')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'RENTAL',
+        amount: 18000,
+        currency: 'AUD',
+        direction: 'IN',
+        counterparty: 'Quarterly Rental Collection',
+        method: 'BANK',
+        receivedAt: new Date('2024-09-05')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'DEPOSIT',
+        amount: 35000,
+        currency: 'AUD',
+        direction: 'IN',
+        counterparty: 'International Wire Transfer',
+        method: 'BANK',
+        overseasAccount: true,
+        isCrossBorder: true,
+        receivedAt: new Date('2024-10-12')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'BALANCE',
+        amount: 22000,
+        currency: 'AUD',
+        direction: 'OUT',
+        counterparty: 'Property Maintenance Fund',
+        method: 'BANK',
+        receivedAt: new Date('2024-11-18')
+      },
+      {
+        entityId: buyerEntity.id,
+        type: 'DEPOSIT',
+        amount: 40000,
+        currency: 'AUD',
+        direction: 'IN',
+        counterparty: 'Year-end Distribution',
+        method: 'BANK',
+        overseasAccount: true,
+        receivedAt: new Date('2024-12-20')
+      }
+    ]
+  })
+
+  // Create OrgSettings
+  await prisma.orgSettings.create({
+    data: {
+      storeDocuments: true,
+      kycReuseMonths: 12
+    }
+  })
+
   // Create audit events for various actions
   await prisma.auditEvent.createMany({
     data: [
@@ -445,9 +601,9 @@ This program will be reviewed annually or when legislative changes occur.`
         entityId: buyerCase.id,
         action: 'CREATE',
         payloadJson: JSON.stringify({
-          title: buyerCase.title,
-          status: buyerCase.status,
-          priority: buyerCase.priority
+          reason: 'RISK_ESCALATION',
+          status: 'UNDER_REVIEW',
+          entityId: buyerEntity.id
         })
       },
       {

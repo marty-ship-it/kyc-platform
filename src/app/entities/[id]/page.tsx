@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
+import { Textarea } from '@/components/ui/textarea'
 import Navbar from '@/components/layout/Navbar'
 import Link from 'next/link'
 import { ScreeningButton } from '@/components/screening-button'
@@ -23,7 +24,10 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  Eye
+  Eye,
+  MessageSquare,
+  Plus,
+  Activity
 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { mockEntities } from '@/lib/mock-data'
@@ -224,7 +228,8 @@ function getKycStatusIcon(status: string) {
 }
 
 export default async function EntityDetailPage({ params }: EntityDetailProps) {
-  const entity = await getEntity(params.id)
+  const { id } = await params
+  const entity = await getEntity(id)
 
   if (!entity) {
     notFound()
@@ -259,6 +264,17 @@ export default async function EntityDetailPage({ params }: EntityDetailProps) {
                 {entity.kind}
               </Badge>
             </div>
+            {/* Aliases */}
+            {entity.aliases && (
+              <div className="flex items-center space-x-2 mb-2">
+                <span className="text-sm text-gray-500">Aliases:</span>
+                {(JSON.parse(entity.aliases as string) as string[]).map((alias, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {alias}
+                  </Badge>
+                ))}
+              </div>
+            )}
             <div className="flex items-center space-x-4 text-gray-600 mb-3">
               {entity.country && (
                 <div className="flex items-center space-x-1">
@@ -304,9 +320,10 @@ export default async function EntityDetailPage({ params }: EntityDetailProps) {
 
       {/* Tabs Content */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="identity">ID Verification</TabsTrigger>
+          <TabsTrigger value="activity">Activity</TabsTrigger>
+          <TabsTrigger value="kyc-docs">KYC Documentation</TabsTrigger>
           <TabsTrigger value="cases">Cases ({entity.cases?.length || 0})</TabsTrigger>
           <TabsTrigger value="kyc">KYC History</TabsTrigger>
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
@@ -415,10 +432,92 @@ export default async function EntityDetailPage({ params }: EntityDetailProps) {
               </CardContent>
             </Card>
           </div>
+
+          {/* Master Notes Section */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center">
+                  <MessageSquare className="w-5 h-5 mr-2" />
+                  Master Notes
+                </CardTitle>
+                <Button variant="outline" size="sm">
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Note
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Textarea 
+                  placeholder="Add a master note for this entity..." 
+                  className="min-h-[100px]"
+                />
+                <div className="flex justify-end">
+                  <Button size="sm">Save Note</Button>
+                </div>
+              </div>
+              
+              {entity.masterNotes && (
+                <div className="space-y-3 border-t pt-4">
+                  {(JSON.parse(entity.masterNotes as string) as any[]).map((note) => (
+                    <div key={note.id} className="bg-gray-50 rounded-lg p-4">
+                      <p className="text-sm text-gray-900 mb-2">{note.text}</p>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <span className="font-medium">By: {note.byUserId}</span>
+                        <span className="mx-2">•</span>
+                        <span>{new Date(note.createdAt).toLocaleString('en-AU')}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {(!entity.masterNotes || JSON.parse(entity.masterNotes as string).length === 0) && (
+                <p className="text-sm text-gray-500 italic">No master notes yet.</p>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
 
-        <TabsContent value="identity" className="space-y-6">
-          <IdVerification entityId={entity.id} />
+        <TabsContent value="activity">
+          <Card>
+            <CardHeader>
+              <CardTitle>Activity Timeline</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center py-8">
+              <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">View Full Activity Timeline</h3>
+              <p className="text-gray-600 mb-4">
+                See all KYC runs, screenings, cases, and transactions in chronological order.
+              </p>
+              <Button asChild>
+                <Link href={`/entities/${entity.id}/activity`}>
+                  View Timeline
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="kyc-docs">
+          <Card>
+            <CardHeader>
+              <CardTitle>KYC Documentation</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center py-8">
+              <Shield className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Enhanced KYC Documentation</h3>
+              <p className="text-gray-600 mb-4">
+                Complete document verification with support for multiple document types and "Verified Elsewhere" options.
+              </p>
+              <Button asChild>
+                <Link href={`/entities/${id}/kyc`}>
+                  Open KYC Documentation
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="cases" className="space-y-4">
@@ -560,7 +659,27 @@ export default async function EntityDetailPage({ params }: EntityDetailProps) {
           )}
         </TabsContent>
 
-        <TabsContent value="transactions" className="space-y-4">
+        <TabsContent value="transactions">
+          <Card>
+            <CardHeader>
+              <CardTitle>Transaction Analysis</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center py-8">
+              <DollarSign className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">View Transaction Analysis</h3>
+              <p className="text-gray-600 mb-4">
+                See detailed transaction analysis with charts, totals, and export options.
+              </p>
+              <Button asChild>
+                <Link href={`/entities/${entity.id}/transactions`}>
+                  View Transactions
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="transactions-old" className="space-y-4 hidden">
           {entity.transactions && entity.transactions.map((transaction) => (
             <Card key={transaction.id}>
               <CardContent className="p-6">

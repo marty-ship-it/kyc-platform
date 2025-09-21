@@ -192,3 +192,8 @@ prisma:query SELECT `main`.`organisations`.`id`, `main`.`organisations`.`name`, 
 
  ✓ Starting...
  ✓ Ready in 1553ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 607ms (510 modules)
+ GET /api/auth/session 200 in 1143ms
+ GET /api/auth/session 200 in 23ms
+[?25h
