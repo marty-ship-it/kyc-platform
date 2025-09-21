@@ -63,7 +63,16 @@ export async function GET(request: Request) {
         dob: new Date('1985-03-15'),
         country: 'Australia',
         riskScore: 'MEDIUM',
-        riskRationale: 'Medium risk due to offshore investment fund involvement'
+        riskRationale: 'Medium risk due to offshore investment fund involvement',
+        aliases: JSON.stringify(["James Chen", "James Robert Chen Jr"]),
+        masterNotes: JSON.stringify([
+          { 
+            id: "1", 
+            byUserId: sarah.id, 
+            text: "Longstanding client with overseas connections", 
+            createdAt: new Date().toISOString() 
+          }
+        ])
       }
     })
 
@@ -158,6 +167,10 @@ export async function GET(request: Request) {
         reason: 'RISK_ESCALATION',
         status: 'UNDER_REVIEW',
         createdById: luca.id,
+        signals: JSON.stringify([
+          { type: "OVERSEAS_ACCOUNT" },
+          { type: "AMOUNT_THRESHOLD", value: 20000 }
+        ]),
         notes: JSON.stringify([{
           by: 'Luca Romano',
           at: new Date().toISOString(),
@@ -166,7 +179,15 @@ export async function GET(request: Request) {
       }
     })
 
-    // Create transactions
+    // Create OrgSettings
+    await prisma.orgSettings.create({
+      data: {
+        storeDocuments: true,
+        kycReuseMonths: 12
+      }
+    })
+
+    // Create transactions (both deal-linked and entity-linked)
     await prisma.transaction.createMany({
       data: [
         {
@@ -191,6 +212,71 @@ export async function GET(request: Request) {
           purpose: 'Additional deposit from company account',
           isInternal: true,
           receivedAt: new Date('2024-01-17')
+        },
+        // Entity-linked transactions for James Chen
+        {
+          entityId: james.id,
+          type: 'DEPOSIT',
+          amount: 20000,
+          currency: 'AUD',
+          direction: 'IN',
+          counterparty: 'Offshore Fund Transfer',
+          method: 'BANK',
+          overseasAccount: true,
+          receivedAt: new Date('2024-01-15')
+        },
+        {
+          entityId: james.id,
+          type: 'RENTAL',
+          amount: 15000,
+          currency: 'AUD',
+          direction: 'IN',
+          counterparty: 'Rental Income - Unit 5/123 Main St',
+          method: 'BANK',
+          overseasAccount: false,
+          receivedAt: new Date('2024-02-10')
+        },
+        {
+          entityId: james.id,
+          type: 'INTERNAL_TRANSFER',
+          amount: 5000,
+          currency: 'AUD',
+          direction: 'OUT',
+          counterparty: 'Internal Account Transfer',
+          method: 'BANK',
+          isInternal: true,
+          receivedAt: new Date('2024-03-05')
+        },
+        {
+          entityId: james.id,
+          type: 'DEPOSIT',
+          amount: 25000,
+          currency: 'AUD',
+          direction: 'IN',
+          counterparty: 'Investment Returns',
+          method: 'BANK',
+          overseasAccount: true,
+          receivedAt: new Date('2024-04-20')
+        },
+        {
+          entityId: james.id,
+          type: 'RENTAL',
+          amount: 12000,
+          currency: 'AUD',
+          direction: 'IN',
+          counterparty: 'Rental Income - Commercial Property',
+          method: 'BANK',
+          receivedAt: new Date('2024-05-15')
+        },
+        {
+          entityId: james.id,
+          type: 'BALANCE',
+          amount: 50000,
+          currency: 'AUD',
+          direction: 'OUT',
+          counterparty: 'Property Investment',
+          method: 'BANK',
+          receivedAt: new Date('2024-06-01')
         }
       ]
     })
