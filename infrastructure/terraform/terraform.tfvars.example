@@ -1,0 +1,45 @@
+# Example Terraform variables file
+# Copy this to terraform.tfvars and fill in your values
+# DO NOT commit terraform.tfvars to version control
+
+# AWS Configuration
+aws_region = "ap-southeast-2"
+environment = "production"
+
+# Network Configuration
+vpc_cidr           = "10.0.0.0/16"
+availability_zones = ["ap-southeast-2a", "ap-southeast-2b"]
+
+# ECS Configuration
+ecs_task_cpu      = 512
+ecs_task_memory   = 1024
+ecs_desired_count = 2
+ecs_max_count     = 4
+ecs_min_count     = 1
+
+# RDS Configuration
+db_instance_class           = "db.t3.medium"
+db_allocated_storage        = 100
+db_name                     = "kycplatform"
+db_username                 = "kycadmin"
+db_backup_retention_period  = 7
+db_multi_az                 = true
+
+# Application Configuration
+app_domain      = "kyc-platform.example.com"
+certificate_arn = "arn:aws:acm:ap-southeast-2:123456789012:certificate/your-cert-id"
+
+# Secrets (Use AWS Secrets Manager or environment variables for these)
+nextauth_secret = "your-nextauth-secret-here-generate-with-openssl-rand-base64-32"
+
+# GitHub Configuration
+github_repo   = "marty-ship-it/kyc-platform"
+github_branch = "main"
+
+# Monitoring
+alert_email              = "your-email@example.com"
+enable_container_insights = true
+log_retention_days       = 30
+
+# Cost Management
+enable_cost_allocation_tags = true

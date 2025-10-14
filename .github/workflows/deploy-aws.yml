@@ -1,0 +1,275 @@
+name: Deploy to AWS ECS
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
+
+env:
+  AWS_REGION: ap-southeast-2
+  ECR_REPOSITORY: kyc-platform
+  ECS_CLUSTER: kyc-platform-cluster
+  ECS_SERVICE: kyc-platform-service
+  CONTAINER_NAME: nextjs-app
+
+jobs:
+  determine-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+    steps:
+      - name: Determine environment
+        id: set-env
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+            echo "environment=dev" >> $GITHUB_OUTPUT
+          else
+            echo "environment=dev" >> $GITHUB_OUTPUT
+          fi
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run type check
+        run: npm run typecheck
+
+      - name: Run E2E tests
+        run: |
+          npx playwright install --with-deps
+          npm run test:e2e
+        env:
+          DATABASE_URL: "file:./test.db"
+
+  build-and-push:
+    name: Build and Push Docker Image
+    needs: [test, determine-environment]
+    runs-on: ubuntu-latest
+    environment: ${{ needs.determine-environment.outputs.environment }}
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}-${{ needs.determine-environment.outputs.environment }}
+          tags: |
+            type=sha,prefix={{branch}}-
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.railway
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+          build-args: |
+            NODE_ENV=production
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}-${{ needs.determine-environment.outputs.environment }}:latest
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  deploy:
+    name: Deploy to ECS
+    needs: [build-and-push, determine-environment]
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.determine-environment.outputs.environment }}
+      url: ${{ steps.deploy-output.outputs.url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition ${{ env.ECS_CLUSTER }}-${{ needs.determine-environment.outputs.environment }} \
+            --query taskDefinition > task-definition.json
+
+      - name: Fill in new image ID in task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}-${{ needs.determine-environment.outputs.environment }}:latest
+
+      - name: Deploy to Amazon ECS
+        id: deploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}-${{ needs.determine-environment.outputs.environment }}
+          cluster: ${{ env.ECS_CLUSTER }}-${{ needs.determine-environment.outputs.environment }}
+          wait-for-service-stability: true
+          wait-for-minutes: 10
+
+      - name: Run database migrations
+        run: |
+          TASK_ARN=$(aws ecs list-tasks \
+            --cluster ${{ env.ECS_CLUSTER }}-${{ needs.determine-environment.outputs.environment }} \
+            --service-name ${{ env.ECS_SERVICE }}-${{ needs.determine-environment.outputs.environment }} \
+            --query 'taskArns[0]' \
+            --output text)
+
+          echo "Running migrations on task: $TASK_ARN"
+
+          aws ecs execute-command \
+            --cluster ${{ env.ECS_CLUSTER }}-${{ needs.determine-environment.outputs.environment }} \
+            --task $TASK_ARN \
+            --container ${{ env.CONTAINER_NAME }} \
+            --interactive \
+            --command "npx prisma db push"
+
+      - name: Verify deployment
+        run: |
+          # Get the ALB DNS name
+          ALB_DNS=$(aws elbv2 describe-load-balancers \
+            --names kyc-platform-alb-${{ needs.determine-environment.outputs.environment }} \
+            --query 'LoadBalancers[0].DNSName' \
+            --output text)
+
+          echo "Checking health endpoint: https://$ALB_DNS/api/db-test"
+
+          # Wait for health check
+          for i in {1..30}; do
+            if curl -sf "https://$ALB_DNS/api/db-test" > /dev/null; then
+              echo "✅ Deployment successful! Application is healthy."
+              exit 0
+            fi
+            echo "Waiting for application to be healthy... ($i/30)"
+            sleep 10
+          done
+
+          echo "❌ Deployment verification failed"
+          exit 1
+
+      - name: Set deployment output
+        id: deploy-output
+        run: |
+          if [ "${{ needs.determine-environment.outputs.environment }}" == "production" ]; then
+            echo "url=https://kyc-platform.example.com" >> $GITHUB_OUTPUT
+          else
+            echo "url=https://${{ needs.determine-environment.outputs.environment }}-kyc-platform.example.com" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "🚀 Deployment to ${{ needs.determine-environment.outputs.environment }} succeeded!"
+          else
+            echo "❌ Deployment to ${{ needs.determine-environment.outputs.environment }} failed!"
+          fi
+
+  rollback:
+    name: Rollback on Failure
+    needs: [deploy, determine-environment]
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Rollback ECS service
+        run: |
+          # Get previous task definition
+          PREVIOUS_TASK_DEF=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }}-${{ needs.determine-environment.outputs.environment }} \
+            --services ${{ env.ECS_SERVICE }}-${{ needs.determine-environment.outputs.environment }} \
+            --query 'services[0].deployments[1].taskDefinition' \
+            --output text)
+
+          if [ "$PREVIOUS_TASK_DEF" != "None" ]; then
+            echo "Rolling back to: $PREVIOUS_TASK_DEF"
+            aws ecs update-service \
+              --cluster ${{ env.ECS_CLUSTER }}-${{ needs.determine-environment.outputs.environment }} \
+              --service ${{ env.ECS_SERVICE }}-${{ needs.determine-environment.outputs.environment }} \
+              --task-definition $PREVIOUS_TASK_DEF \
+              --force-new-deployment
+          else
+            echo "No previous deployment found for rollback"
+          fi
